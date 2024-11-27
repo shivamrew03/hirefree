@@ -10,34 +10,30 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { Button, Dropdown } from "../common";
 import { ArrowUpRight, BurgerMenu, Close } from "@/icons";
-
+import { useAccount } from "wagmi";
 import ConnectButton from "./ConnectButton";
 
 const Navbar = () => {
   const router = useRouter();
+  const { address, isConnected, chainId } = useAccount();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const links = [
     {
-      name: "My dashboard",
+      name: "My Dashboard",
       href: "/",
     },
+   
     {
-      name: "Create an Invoice",
-      href: "/create-invoice",
+      name: "My projects",
+      href: `/${address}/projects`,
     },
+    {
+      name: "Hire a freelancer",
+      href: "/hire",
+    }
   ];
 
-  const supportLinks = [
-    {
-      name: "Github Discussions",
-      href: "https://github.com/orgs/RequestNetwork/discussions",
-    },
-    {
-      name: "Discord",
-      href: "https://discord.com/channels/468974345222619136/1103420140181274645",
-    },
-  ];
 
   return (
     <nav className="relative h-full flex items-center p-[20px] gap-[20px] xl:gap-[60px] bg-white shadow-small mb-[30px] tablet:mb-[80px]">
@@ -71,22 +67,7 @@ const Navbar = () => {
         ))}
       </ul>
       <div className="hidden tablet:flex items-center gap-[16px] ml-auto ">
-        <Dropdown title="Need help?" items={supportLinks} />
-        <a
-          target="_blank"
-          rel="noreferrer noopener"
-          href="https://docs.request.network/building-blocks/templates"
-          className="flex items-center gap-[6px] bg-transparent text-green font-medium text-[14px] hover:text-dark-green"
-        >
-          Integrate in your app
-          <ArrowUpRight />
-        </a>
         <ConnectButton />
-        <Button
-          text="Book a demo"
-          href={process.env.NEXT_PUBLIC_DEMO_URL}
-          anchorProps={{ target: "_blank", rel: "noreferrer noopener" }}
-        />
       </div>
       <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
         <SheetContent>
@@ -109,29 +90,12 @@ const Navbar = () => {
                 </Link>
               </li>
             ))}
-            <li>
-              <Dropdown title="Need help?" items={supportLinks} />
-            </li>
-            <li>
-              <a
-                target="_blank"
-                rel="noreferrer noopener"
-                href="https://docs.request.network/building-blocks/templates"
-                className="flex items-center gap-[6px] bg-transparent text-green font-medium text-[14px] hover:text-dark-green"
-              >
-                Integrate in your app
-                <ArrowUpRight />
-              </a>
-            </li>
+            
+            
             <li>
               <ConnectButton />
             </li>
-            <li>
-              <Button
-                text="Book a demo"
-                href={process.env.NEXT_PUBLIC_DEMO_URL}
-              />
-            </li>
+            
           </ul>
         </SheetContent>
       </Sheet>
