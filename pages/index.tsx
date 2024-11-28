@@ -65,11 +65,11 @@ export default function InvoiceDashboardPage() {
       <div className="container m-auto w-[100%]">
         <div className="grid grid-cols-3 gap-4 mb-4">
           <div className="p-4 bg-white rounded-lg shadow">
-            <h2 className="text-xl font-bold">Ammount Expected</h2>
+            <h2 className="text-xl font-bold">Amount Expected</h2>
             <p className="text-2xl text-blue-600">{totalExpectedAmount} ETH</p>
           </div>
           <div className="p-4 bg-white rounded-lg shadow">
-            <h2 className="text-xl font-bold">Ammount Received</h2>
+            <h2 className="text-xl font-bold">Amount Received</h2>
             <p className="text-2xl text-green-600">{totalReceivedAmount} ETH</p>
           </div>
           <div className="p-4 bg-white rounded-lg shadow">
