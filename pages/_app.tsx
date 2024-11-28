@@ -24,11 +24,6 @@ export default function App({ Component, pageProps }: AppProps) {
             <Provider>
               <Navbar />
               <Component {...pageProps} />
-              <VersionDisplay
-                githubRelease={
-                  "https://github.com/RequestNetwork/invoicing-template/releases"
-                }
-              />
             </Provider>
           </RainbowKitProvider>
         </QueryClientProvider>
