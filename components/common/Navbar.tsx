@@ -20,11 +20,11 @@ const Navbar = () => {
   const links = [
     {
       name: "Home",
-      href: "/home",
+      href: "/",
     },
     {
       name: "Overview",
-      href: "/",
+      href: "/home",
     },
     {
       name: "My projects",
