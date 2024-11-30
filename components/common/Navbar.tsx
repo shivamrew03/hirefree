@@ -32,8 +32,11 @@ const Navbar = () => {
     },
     {
       name: "Hire a freelancer",
-      href: "/hire",
-    },
+      href: "/hire-freelancer",
+    },{
+      name: "Register as freelancer",
+      href: "/register/freelancer"
+    }
   ];
   return (
     <nav className="relative h-[80px] flex items-center pr-6 lg:pr-12 bg-white shadow-lg mb-8">

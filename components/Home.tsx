@@ -79,10 +79,10 @@ const Home = () => {
                   Hire a Freelancer
                 </Link>
                 <Link
-                  href="/"
+                  href="/register/freelancer"
                   className="px-8 py-4 bg-dark-blue text-white rounded-lg text-lg font-semibold hover:bg-opacity-90 transition-opacity shadow-small hover:shadow-md transform hover:-translate-y-1 transition-transform duration-300"
                 >
-                  Get Started
+                  Register as Freelancer
                 </Link>
               </div>
             </div>
