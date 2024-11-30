@@ -126,3 +126,176 @@ export async function getAllFreelancers(): Promise<Freelancer[]> {
     timestamp: Number(row.timestamp)
   }));
 } 
+
+// Add this interface
+export interface Project {
+  id: number;
+  client_address: string;
+  freelancer_address: string;
+  title: string;
+  description: string;
+  budget: number;
+  timeline: number;
+  milestones: string; // Will store JSON stringified array
+  status: string;
+  timestamp: number;
+}
+
+// Add this function
+export async function createProjectTable() {
+  const { meta: create } = await db
+    .prepare(`CREATE TABLE projects (
+      id integer primary key,
+      client_address text,
+      freelancer_address text,
+      title text,
+      description text,
+      budget integer,
+      timeline integer,
+      milestones text,
+      status text,
+      timestamp integer
+    );`)
+    .run();
+
+  return create.txn?.name;
+}
+
+// Add this function
+export async function createProject(project: Omit<Project, 'id' | 'timestamp'>) {
+  const tableName = "projects_11155420_173";
+  
+  try {
+    // First attempt to insert
+    const { meta: insert } = await db
+      .prepare(`INSERT INTO ${tableName} (
+        client_address,
+        freelancer_address,
+        title,
+        description,
+        budget,
+        timeline,
+        milestones,
+        status,
+        timestamp
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`)
+      .bind(
+        project.client_address,
+        project.freelancer_address,
+        project.title,
+        project.description,
+        project.budget,
+        project.timeline,
+        project.milestones,
+        project.status,
+        Math.floor(Date.now() / 1000)
+      )
+      .run();
+      await insert?.txn?.wait();
+      console.log("found table and inserted")
+    return insert;
+    
+  } catch (error) {
+    // If table doesn't exist, create it and try inserting again
+    console.log("table not found, creating table...");
+    await createProjectTable();
+    console.log("created table")
+    // Retry insertion after table creation
+    const { meta: insert } = await db
+      .prepare(`INSERT INTO ${tableName} (
+        client_address,
+        freelancer_address,
+        title,
+        description,
+        budget,
+        timeline,
+        milestones,
+        status,
+        timestamp
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`)
+      .bind(
+        project.client_address,
+        project.freelancer_address,
+        project.title,
+        project.description,
+        project.budget,
+        project.timeline,
+        project.milestones,
+        project.status,
+        Math.floor(Date.now() / 1000)
+      )
+      .run();
+      console.log("inserted data")
+    await insert?.txn?.wait();
+    return insert;
+  }
+}
+
+
+export async function getProjectsByFreelancer(freelancer_address: string): Promise<Project[]> {
+  const tableName = "projects_11155420_173";
+  console.log(freelancer_address)
+  const { results } = await db
+    .prepare(`SELECT * FROM ${tableName} WHERE freelancer_address = ? ORDER BY timestamp DESC;`)
+    .bind(freelancer_address)
+    .all();
+  
+  console.log("results are :");
+  console.log(results);
+  return results.map(row => ({
+    id: Number(row.id),
+    client_address: String(row.client_address),
+    freelancer_address: String(row.freelancer_address),
+    title: String(row.title),
+    description: String(row.description),
+    budget: Number(row.budget),
+    timeline: Number(row.timeline),
+    milestones: row.milestones, // Parse the JSON string to get the actual object
+    status: String(row.status),
+    timestamp: Number(row.timestamp)
+  }));
+}
+export async function getProjectById(id: string): Promise<Project | null> {
+  const tableName = "projects_11155420_173";
+  console.log(id);
+  console.log("HI")
+  const { results } = await db
+    .prepare(`SELECT * FROM ${tableName} WHERE id = ?;`)
+    .bind(id)
+    .all();
+  // console.log("HI")
+  if (results.length === 0) {
+    return null;
+  }
+
+  const row = results[0];
+  return {
+    id: Number(row.id),
+    client_address: String(row.client_address),
+    freelancer_address: String(row.freelancer_address),
+    title: String(row.title),
+    description: String(row.description),
+    budget: Number(row.budget),
+    timeline: Number(row.timeline),
+    milestones: String(row.milestones),
+    status: String(row.status),
+    timestamp: Number(row.timestamp)
+  };
+}
+
+export async function updateMilestoneStatus(projectId: string, milestoneIndex: number): Promise<void> {
+  const project = await getProjectById(projectId);
+  if (!project) return;
+
+  const milestones = JSON.parse(project.milestones);
+  milestones[milestoneIndex].completed = true;
+
+  const tableName = "projects_11155420_167";
+  
+  const { meta: update } = await db
+    .prepare(`UPDATE ${tableName} SET milestones = ? WHERE id = ?;`)
+    .bind(JSON.stringify(milestones), projectId)
+    .run();
+
+  await update?.txn?.wait();
+}

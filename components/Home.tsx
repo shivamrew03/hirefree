@@ -73,7 +73,7 @@ const Home = () => {
             <div className="space-y-8">
               <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
                 <Link
-                  href="/hire"
+                  href="/hire-freelancer"
                   className="px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg text-lg font-semibold hover:opacity-90 transition-opacity shadow-small hover:shadow-md transform hover:-translate-y-1 transition-transform duration-300"
                 >
                   Hire a Freelancer
