@@ -4,8 +4,9 @@ import { getTheGraphClient } from "@requestnetwork/payment-detection";
 
 export const initializeRequestNetwork = (setter: any, walletClient: any) => {
   try {
+    console.log(walletClient);
     const web3SignatureProvider = new Web3SignatureProvider(walletClient);
-
+    console.log(walletClient)
     const requestNetwork = new RequestNetwork({
       nodeConnectionConfig: {
         baseURL: "https://gnosis.gateway.request.network/",
