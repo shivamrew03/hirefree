@@ -28,12 +28,14 @@ export default function Projects() {
     const fetchProjects = async () => {
       if (address) {
         try {
-          const response = await fetch(`/api/project/getByFreelancer?address=${address}`);
+          const response = await fetch(
+            `/api/project/getByFreelancer?address=${address}`
+          );
           const data = await response.json();
-          console.log(data)
+          console.log(data);
           setProjects(data);
         } catch (error) {
-          console.error('Error fetching projects:', error);
+          console.error("Error fetching projects:", error);
         } finally {
           setLoading(false);
         }
@@ -55,8 +57,8 @@ export default function Projects() {
         milestones: JSON.stringify(project.milestones),
         status: project.status,
         client_address: project.client_address,
-        freelancer_address: project.freelancer_address
-      }
+        freelancer_address: project.freelancer_address,
+      },
     });
   };
 
@@ -65,14 +67,14 @@ export default function Projects() {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2
-      }
-    }
+        staggerChildren: 0.2,
+      },
+    },
   };
 
   const item = {
     hidden: { y: 20, opacity: 0 },
-    show: { y: 0, opacity: 1 }
+    show: { y: 0, opacity: 1 },
   };
 
   return (
@@ -81,7 +83,7 @@ export default function Projects() {
         <title>My Projects - HireFree</title>
       </Head>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-12">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -96,11 +98,11 @@ export default function Projects() {
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
             </div>
           ) : (
-            <motion.div 
+            <motion.div
               variants={container}
               initial="hidden"
               animate="show"
-              className="grid gap-8"
+              className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto"
             >
               {projects.map((project) => (
                 <motion.div
@@ -108,20 +110,22 @@ export default function Projects() {
                   variants={item}
                   whileHover={{ scale: 1.02 }}
                   onClick={() => handleProjectClick(project)}
-                  className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-8 cursor-pointer border border-gray-100"
+                  className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 px-8 py-6 cursor-pointer border border-gray-100"
                 >
                   <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-2xl font-bold text-gray-800">{project.title}</h2>
-                    <span className="px-4 py-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800 flex items-center">
+                    <h2 className="text-2xl font-bold text-gray-800 truncate">
+                      {project.title}
+                    </h2>
+                    <span className="px-3 py-1.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800 flex items-center">
                       <Tag className="w-4 h-4 mr-2" />
                       {project.status}
                     </span>
                   </div>
-                  
-                  <p className="text-gray-600 mb-6">{project.description}</p>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-4">
+
+                  <p className="text-gray-600 mb-5 line-clamp-2">{project.description}</p>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-3">
                       <div className="flex items-center text-gray-700">
                         <DollarSign className="w-5 h-5 text-blue-600 mr-2" />
                         <span className="font-medium">${project.budget}</span>
@@ -131,16 +135,14 @@ export default function Projects() {
                         <span className="font-medium">{project.timeline} days</span>
                       </div>
                     </div>
-                    <div className="space-y-4">
+                    <div className="space-y-3">
                       <div className="flex items-center text-gray-700">
                         <User className="w-5 h-5 text-blue-600 mr-2" />
-                        <span className="font-medium truncate">{project.client_address}</span>
+                        <span className="font-medium truncate">{project.client_address.slice(0, 10)}...</span>
                       </div>
                       <div className="flex items-center text-gray-700">
                         <Calendar className="w-5 h-5 text-blue-600 mr-2" />
-                        <span className="font-medium">
-                          {new Date(project.timestamp * 1000).toLocaleDateString()}
-                        </span>
+                        <span className="font-medium">{new Date(project.timestamp * 1000).toLocaleDateString()}</span>
                       </div>
                     </div>
                   </div>
