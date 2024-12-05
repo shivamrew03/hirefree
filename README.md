@@ -19,17 +19,17 @@ HireFree is an innovative blockchain-powered freelancing platform that transform
 
 ### HireFree Architecture
 <p align="center">
-  <img src="packages/Basic Architecture.png" alt="Hyper Harvest Architecture" width="800" />
+  <img src="public/Basic Architecture.png" alt="Hyper Harvest Architecture" width="1000" />
 </p>
 
 ### Project Workflow
 <p align="center">
-  <img src="packages/Project Workflow.png" alt="Hyper Harvest Architecture" width="800" />
+  <img src="public/Project Workflow.png" alt="Hyper Harvest Architecture" width="1000" />
 </p>
 
 ### Data Flow Diagram
 <p align="center">
-  <img src="packages/Hirefree DFD.png" alt="Hyper Harvest Architecture" width="800" />
+  <img src="public/HireFree DFD.png" alt="Hyper Harvest Architecture" width="1000" />
 </p>
 
 
