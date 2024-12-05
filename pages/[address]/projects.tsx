@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
 import Head from "next/head";
+import { motion } from "framer-motion";
+import { Calendar, DollarSign, User, Clock, Tag } from "lucide-react";
 
 interface Project {
   id: number;
@@ -57,8 +59,21 @@ export default function Projects() {
       }
     });
   };
-  
-  
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const item = {
+    hidden: { y: 20, opacity: 0 },
+    show: { y: 0, opacity: 1 }
+  };
 
   return (
     <>
@@ -66,7 +81,12 @@ export default function Projects() {
         <title>My Projects - HireFree</title>
       </Head>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-12">
-        <div className="container mx-auto px-4">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="container mx-auto px-4"
+        >
           <h1 className="text-4xl font-bold mb-12 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             My Projects
           </h1>
@@ -76,41 +96,59 @@ export default function Projects() {
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
             </div>
           ) : (
-            <div className="grid gap-8">
+            <motion.div 
+              variants={container}
+              initial="hidden"
+              animate="show"
+              className="grid gap-8"
+            >
               {projects.map((project) => (
-                <div
+                <motion.div
                   key={project.id}
+                  variants={item}
+                  whileHover={{ scale: 1.02 }}
                   onClick={() => handleProjectClick(project)}
-                  className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-8 cursor-pointer border border-gray-100 transform hover:-translate-y-1"
+                  className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-8 cursor-pointer border border-gray-100"
                 >
-                  <h2 className="text-2xl font-bold mb-3 text-gray-800">{project.title}</h2>
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-2xl font-bold text-gray-800">{project.title}</h2>
+                    <span className="px-4 py-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800 flex items-center">
+                      <Tag className="w-4 h-4 mr-2" />
+                      {project.status}
+                    </span>
+                  </div>
+                  
                   <p className="text-gray-600 mb-6">{project.description}</p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-                    <div className="space-y-2">
-                      <p className="text-gray-700 font-medium">
-                        <span className="text-blue-600">Budget:</span> ${project.budget}
-                      </p>
-                      <p className="text-gray-700 font-medium">
-                        <span className="text-blue-600">Timeline:</span> {project.timeline} days
-                      </p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div className="flex items-center text-gray-700">
+                        <DollarSign className="w-5 h-5 text-blue-600 mr-2" />
+                        <span className="font-medium">${project.budget}</span>
+                      </div>
+                      <div className="flex items-center text-gray-700">
+                        <Clock className="w-5 h-5 text-blue-600 mr-2" />
+                        <span className="font-medium">{project.timeline} days</span>
+                      </div>
                     </div>
-                    <div className="space-y-2">
-                      <p className="text-gray-700 font-medium">
-                        <span className="text-blue-600">Client:</span> {project.client_address}
-                      </p>
-                      <p className="text-gray-700 font-medium">
-                        <span className="text-blue-600">Status:</span> 
-                        <span className="ml-2 px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                          {project.status}
+                    <div className="space-y-4">
+                      <div className="flex items-center text-gray-700">
+                        <User className="w-5 h-5 text-blue-600 mr-2" />
+                        <span className="font-medium truncate">{project.client_address}</span>
+                      </div>
+                      <div className="flex items-center text-gray-700">
+                        <Calendar className="w-5 h-5 text-blue-600 mr-2" />
+                        <span className="font-medium">
+                          {new Date(project.timestamp * 1000).toLocaleDateString()}
                         </span>
-                      </p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           )}
-        </div>
+        </motion.div>
       </div>
     </>
   );

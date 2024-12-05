@@ -1,4 +1,3 @@
-
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { config } from "@/utils/config";
@@ -13,10 +12,18 @@ import { useAccount } from "wagmi";
 import axios from "axios";
 
 const InvoiceDashboard = dynamic(
-  () => import("@requestnetwork/invoice-dashboard/react"),
+  () => {
+    // Ensure web component is loaded only once in the client
+    if (
+      typeof window !== "undefined" &&
+      !customElements.get("invoice-dashboard")
+    ) {
+      require("@requestnetwork/invoice-dashboard");
+    }
+    return import("@requestnetwork/invoice-dashboard/react");
+  },
   { ssr: false, loading: () => <Spinner /> }
 );
-
 export default function InvoiceDashboardPage() {
   const { requestNetwork } = useAppContext();
   const { address } = useAccount();

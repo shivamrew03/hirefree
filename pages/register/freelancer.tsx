@@ -4,6 +4,9 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useAccount, useConnect } from 'wagmi';
 import Toast from '../../components/Toast';
+import { ArrowUpRight, Close } from '../../icons';
+import { Sheet, SheetContent } from '../../components';
+import { motion } from 'framer-motion';
 
 interface FormData {
   fullName: string;
@@ -210,17 +213,28 @@ const FreelancerRegistration = () => {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="block text-gray-700 mb-2" htmlFor="fullName">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  id="fullName"
-                  required
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-blue-400"
-                  value={formData.fullName}
-                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                />
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="relative"
+                >
+                  <input
+                    type="text"
+                    id="fullName"
+                    required
+                    className="peer w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-blue-400 placeholder-transparent"
+                    value={formData.fullName}
+                    placeholder="Full Name"
+                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                  />
+                  <label
+                    htmlFor="fullName"
+                    className="absolute left-3 -top-2.5 bg-white px-2 text-sm text-gray-600 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-4 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-600"
+                  >
+                    Full Name
+                  </label>
+                </motion.div>
               </div>
 
               <div>
