@@ -26,7 +26,11 @@ interface Project {
 export default function ProjectDetails() {
   const router = useRouter();
   const { query } = router;
-  const parsedMilestones = query.milestones ? JSON.parse(String(query.milestones)) : [];
+
+  // Parse milestones and project details
+  const parsedMilestones = query.milestones
+    ? JSON.parse(String(query.milestones))
+    : [];
 
   const project = {
     id: Number(query.projectId),
@@ -37,32 +41,37 @@ export default function ProjectDetails() {
     milestones: String(query.milestones),
     status: String(query.status),
     client_address: String(query.client_address),
-    freelancer_address: String(query.freelancer_address)
+    freelancer_address: String(query.freelancer_address),
   };
 
+  // State to track completed milestones
+  const [completedMilestones, setCompletedMilestones] = useState<number[]>([]);
+
+  // Handle invoice creation and update completed milestones
   const handleCreateInvoice = async (milestoneIndex: number) => {
     try {
-      await fetch('/api/project/updateMilestone', {
-        method: 'POST',
+      await fetch("/api/project/updateMilestone", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           projectId: project.id,
-          milestoneIndex
+          milestoneIndex,
         }),
       });
 
-      router.push('/create-invoice');
+      setCompletedMilestones((prev) => [...prev, milestoneIndex]);
+      router.push("/create-invoice");
     } catch (error) {
-      console.error('Error updating milestone:', error);
+      console.error("Error updating milestone:", error);
     }
   };
 
   return (
     <>
       <Head>
-        <title>{project?.title || 'Project Details'} - HireFree</title>
+        <title>{project?.title || "Project Details"} - HireFree</title>
       </Head>
       <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12">
         <div className="container mx-auto px-4">
@@ -75,9 +84,13 @@ export default function ProjectDetails() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h2 className="text-xl font-semibold mb-2">Project Details</h2>
+                  <h2 className="text-xl font-semibold mb-2">
+                    Project Details
+                  </h2>
                   <p className="text-gray-600">Budget: ${project.budget}</p>
-                  <p className="text-gray-600">Timeline: {project.timeline} days</p>
+                  <p className="text-gray-600">
+                    Timeline: {project.timeline} days
+                  </p>
                   <p className="text-gray-600">Status: {project.status}</p>
                 </div>
                 <div>
@@ -89,28 +102,35 @@ export default function ProjectDetails() {
                 <h2 className="text-xl font-semibold mb-4">Milestones</h2>
                 <div className="space-y-4">
                   {parsedMilestones.map((milestone, index) => (
-                    <div 
+                    <div
                       key={index}
-                      className={`p-4 rounded-lg border ${
-                        milestone.completed 
-                          ? 'bg-green-50 border-green-200' 
-                          : 'bg-white border-gray-200'
+                      className={`p-6 rounded-xl border transition-all duration-300 hover:shadow-lg ${
+                        completedMilestones.includes(index)
+                          ? "bg-gradient-to-r from-green-50 to-emerald-50 border-green-200"
+                          : "bg-white border-gray-200"
                       }`}
                     >
                       <div className="flex justify-between items-center">
                         <div>
-                          <h3 className="font-semibold">
-                            {milestone.completed && (
-                              <span className="text-green-500 mr-2">✓</span>
+                          <h3 className="font-bold text-lg flex items-center">
+                            {completedMilestones.includes(index) && (
+                              <span className="text-green-500 mr-2 text-xl">
+                                ✓
+                              </span>
                             )}
                             {milestone.name}
                           </h3>
-                          <p className="text-gray-600">Amount: ${milestone.amount}</p>
+                          <p className="text-gray-600 mt-2 text-lg font-medium">
+                            Amount:{" "}
+                            <span className="text-indigo-600">
+                              ${milestone.amount}
+                            </span>
+                          </p>
                         </div>
-                        {!milestone.completed && (
+                        {!completedMilestones.includes(index) && (
                           <button
                             onClick={() => handleCreateInvoice(index)}
-                            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                            className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3 rounded-xl hover:opacity-90 transition-all duration-300 shadow-md hover:shadow-xl transform hover:-translate-y-0.5"
                           >
                             Create Invoice
                           </button>
