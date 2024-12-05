@@ -1,9 +1,9 @@
-import { ethers } from 'ethers';
+import { ethers, Wallet } from 'ethers6';
 import { Database } from "@tableland/sdk";
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY as string;
-export const provider = new ethers.providers.JsonRpcProvider("https://opt-sepolia.g.alchemy.com/v2/PIpC3AUw63Vk0R0AGqLR-WEWBgs8MvkP");
-export const signer = new ethers.Wallet(PRIVATE_KEY, provider);
+export const provider = new ethers.JsonRpcProvider("https://opt-sepolia.g.alchemy.com/v2/PIpC3AUw63Vk0R0AGqLR-WEWBgs8MvkP");
+export const signer = new Wallet(PRIVATE_KEY, provider);
 export const db = new Database({ signer });
 
 const prefix = 'freelancers';
@@ -163,75 +163,37 @@ export async function createProjectTable() {
 
 export async function createProject(project: Omit<Project, 'id' | 'timestamp'>) {
   const tableName = "projects_11155420_173";
-  
-  try {
-    const { meta: insert } = await db
-      .prepare(`INSERT INTO ${tableName} (
-        client_address,
-        freelancer_address,
-        title,
-        description,
-        budget,
-        timeline,
-        milestones,
-        status,
-        timestamp
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`)
-      .bind(
-        project.client_address,
-        project.freelancer_address,
-        project.title,
-        project.description,
-        project.budget,
-        project.timeline,
-        project.milestones,
-        project.status,
-        Math.floor(Date.now() / 1000)
-      )
-      .run();
+  const { meta: insert } = await db
+    .prepare(`INSERT INTO ${tableName} (
+      client_address,
+      freelancer_address,
+      title,
+      description,
+      budget,
+      timeline,
+      milestones,
+      status,
+      timestamp
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`)
+    .bind(
+      project.client_address,
+      project.freelancer_address,
+      project.title,
+      project.description,
+      project.budget,
+      project.timeline,
+      project.milestones,
+      project.status,
+      Math.floor(Date.now() / 1000)
+    )
+    .run();
 
-    if (insert?.txn) {
-      await insert.txn.wait();
-    }
-    console.log("found table and inserted");
-    return insert;
-    
-  } catch (error) {
-    console.log("table not found, creating table...");
-    await createProjectTable();
-    console.log("created table");
-    
-    const { meta: insert } = await db
-      .prepare(`INSERT INTO ${tableName} (
-        client_address,
-        freelancer_address,
-        title,
-        description,
-        budget,
-        timeline,
-        milestones,
-        status,
-        timestamp
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`)
-      .bind(
-        project.client_address,
-        project.freelancer_address,
-        project.title,
-        project.description,
-        project.budget,
-        project.timeline,
-        project.milestones,
-        project.status,
-        Math.floor(Date.now() / 1000)
-      )
-      .run();
-
-    if (insert?.txn) {
-      await insert.txn.wait();
-    }
-    console.log("inserted data");
-    return insert;
+  if (insert?.txn) {
+    await insert.txn.wait();
   }
+  console.log("inserted data");
+  return insert;
+  
 }
 
 export async function getProjectsByFreelancer(freelancer_address: string): Promise<Project[]> {
