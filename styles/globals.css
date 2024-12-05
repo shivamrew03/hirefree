@@ -39,3 +39,17 @@
     background-color: hsl(var(--background));
   }
 }
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background-color: white; /* Or your preferred background color */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds subtle shadow */
+}
+
+main {
+  padding-top: 64px; /* Adjust this value based on your navbar height */
+}

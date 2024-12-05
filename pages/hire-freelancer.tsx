@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { Database } from '@tableland/sdk';
 import { useAccount } from 'wagmi';
-
+import Link from 'next/link';
 interface Milestone {
   name: string;
   amount: string;
@@ -127,53 +127,55 @@ const HireFreelancer = () => {
       alert('Failed to submit project request. Please try again.');
     }
   };
-
   return (
     <>
       <Head>
         <title>Hire Freelancers - HireFree</title>
       </Head>
-      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-12">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-8 text-center text-dark-blue">
+          <h1 className="text-4xl font-bold mb-12 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             Available Freelancers
           </h1>
 
           {loading ? (
             <div className="text-center">Loading freelancers...</div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {freelancers.map((freelancer) => (
                 <div
                   key={freelancer.id}
-                  className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow"
+                  className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 transform hover:-translate-y-1"
                 >
-                  <h2 className="text-xl font-semibold mb-2">{freelancer.full_name}</h2>
-                  <p className="text-gray-600 mb-4">{freelancer.bio}</p>
+                  <h2 className="text-xl font-bold mb-3 text-gray-800">{freelancer.full_name}</h2>
+                  <p className="text-gray-600 mb-4 line-clamp-3">{freelancer.bio}</p>
+                  
                   <div className="mb-4">
-                    <h3 className="font-medium mb-2">Skills:</h3>
+                    <h3 className="font-semibold text-gray-700 mb-2">Skills:</h3>
                     <div className="flex flex-wrap gap-2">
                       {freelancer.skills.map((skill, index) => (
                         <span
                           key={index}
-                          className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
+                          className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium"
                         >
                           {skill}
                         </span>
                       ))}
                     </div>
                   </div>
-                  <div className="flex justify-between items-center">
+
+                  <div className="flex justify-between items-center pt-4 border-t border-gray-100">
                     <div className="text-gray-600">
-                      <p>Experience: {freelancer.experience}</p>
-                      <p>Rate: ${freelancer.hourly_rate}/hr</p>
+                      <p className="font-medium">Experience: {freelancer.experience}</p>
+                      <p className="font-medium">Rate: ${freelancer.hourly_rate}/hr</p>
                     </div>
-                    <button 
+                    <button
                       onClick={() => handleContactClick(freelancer)}
-                      className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                      className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition-all duration-300 shadow-sm hover:shadow-md"
                     >
                       Contact
                     </button>
+                    
                   </div>
                 </div>
               ))}
@@ -184,11 +186,8 @@ const HireFreelancer = () => {
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div 
-            className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ease-in-out"
-            onClick={() => setShowModal(false)}
-          />
-          <div className="bg-white rounded-lg p-8 max-w-md w-full max-h-[90vh] overflow-y-auto relative transform transition-all duration-300 ease-in-out translate-y-0 scale-100 opacity-100">
+          <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity duration-300" onClick={() => setShowModal(false)} />
+          <div className="bg-white rounded-xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative transform transition-all duration-300 shadow-2xl mx-4">
             <h2 className="text-2xl font-bold mb-4">Contact {selectedFreelancer?.full_name}</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">

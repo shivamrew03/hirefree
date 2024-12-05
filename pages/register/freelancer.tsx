@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useAccount, useConnect } from 'wagmi';
+import Toast from '../../components/Toast';
 
 interface FormData {
   fullName: string;
@@ -34,6 +35,15 @@ const FreelancerRegistration = () => {
   });
   const [error, setError] = useState<ErrorType>({ type: null, message: '' });
   const [loading, setLoading] = useState<boolean>(false);
+  const [toast, setToast] = useState<{
+    show: boolean;
+    message: string;
+    type: 'success' | 'error' | 'warning';
+  }>({
+    show: false,
+    message: '',
+    type: 'success'
+  });
 
   const handleSkillsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const skills = e.target.value.split(',').map(skill => skill.trim());
@@ -70,22 +80,41 @@ const FreelancerRegistration = () => {
 
       if (!response.ok) {
         if (data.message === 'This wallet is already registered') {
+          setToast({
+            show: true,
+            message: 'This wallet is already registered',
+            type: 'warning'
+          });
           throw new Error('ALREADY_REGISTERED');
         }
         throw new Error('REGISTRATION_FAILED');
       }
 
-      router.push('/dashboard/freelancer');
+      setToast({
+        show: true,
+        message: 'Registration successful! Redirecting to dashboard...',
+        type: 'success'
+      });
+      
+      setTimeout(() => {
+        router.push('/dashboard/freelancer');
+      }, 2000);
+
     } catch (err) {
       if (err instanceof Error) {
         switch (err.message) {
           case 'ALREADY_REGISTERED':
             setError({
               type: 'ALREADY_REGISTERED',
-              message: 'This wallet is already registered. Cannot register more then once.'
+              message: 'This wallet is already registered. Cannot register more than once.'
             });
             break;
           default:
+            setToast({
+              show: true,
+              message: 'Registration failed. Please try again later.',
+              type: 'error'
+            });
             setError({
               type: 'REGISTRATION_FAILED',
               message: 'Registration failed. Please try again later.'
@@ -155,8 +184,8 @@ const FreelancerRegistration = () => {
         <title>Register as Freelancer - HireFree</title>
       </Head>
       <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12">
-        <div className="container mx-auto px-4 max-w-2xl">
-          <h1 className="text-4xl font-bold mb-8 text-center text-dark-blue">
+        <div className="container mx-auto px-4 max-w-2xl bg-white rounded-xl shadow-lg p-8 border border-gray-100">
+          <h1 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             Register as a Freelancer
           </h1>
 
@@ -188,7 +217,7 @@ const FreelancerRegistration = () => {
                   type="text"
                   id="fullName"
                   required
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-blue-400"
                   value={formData.fullName}
                   onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                 />
@@ -202,7 +231,7 @@ const FreelancerRegistration = () => {
                   type="email"
                   id="email"
                   required
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-blue-400"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 />
@@ -216,7 +245,7 @@ const FreelancerRegistration = () => {
                   type="text"
                   id="skills"
                   required
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-blue-400"
                   placeholder="React, TypeScript, Node.js"
                   onChange={handleSkillsChange}
                 />
@@ -229,7 +258,7 @@ const FreelancerRegistration = () => {
                 <select
                   id="experience"
                   required
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-blue-400"
                   value={formData.experience}
                   onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
                 >
@@ -250,7 +279,7 @@ const FreelancerRegistration = () => {
                   id="hourlyRate"
                   required
                   min="0"
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-blue-400"
                   value={formData.hourlyRate}
                   onChange={(e) => setFormData({ ...formData, hourlyRate: Number(e.target.value) })}
                 />
@@ -263,7 +292,7 @@ const FreelancerRegistration = () => {
                 <input
                   type="url"
                   id="portfolio"
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-blue-400"
                   value={formData.portfolio}
                   onChange={(e) => setFormData({ ...formData, portfolio: e.target.value })}
                 />
@@ -276,7 +305,7 @@ const FreelancerRegistration = () => {
                 <textarea
                   id="bio"
                   required
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent h-32"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-blue-400 h-32"
                   value={formData.bio}
                   onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                 />
@@ -285,12 +314,18 @@ const FreelancerRegistration = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg text-lg font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
+                className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg text-lg font-semibold hover:opacity-90 transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:hover:scale-100 shadow-lg"
               >
                 {loading ? 'Registering...' : 'Register'}
               </button>
             </form>
           )}
+          <Toast 
+            show={toast.show}
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(prev => ({ ...prev, show: false }))}
+          />
         </div>
       </div>
     </>
