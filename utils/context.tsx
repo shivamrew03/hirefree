@@ -31,7 +31,7 @@ export const Provider = ({ children }: { children: ReactNode }) => {
   return (
     <Context.Provider
       value={{
-        requestNetwork,
+        requestNetwork: walletClient ? requestNetwork : null,
       }}
     >
       {children}
