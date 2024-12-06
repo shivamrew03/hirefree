@@ -1,8 +1,5 @@
----
-icon: hand-wave
----
 
-# Welcome
+# HireFree
 
 <div align="center"><img src=".gitbook/assets/logojj.png" alt="HireFree Logo" width="200"></div>
 
