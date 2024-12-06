@@ -7,7 +7,7 @@ At the heart of HireFree's unique proposition lies its milestone-based invoicing
 
 ## ✏️ Key Features
 
-### 1) Decentralized Freelancer Profiles : 
+### 1) Decentralized Freelancer Profiles 
 Freelancers can create and maintain blockchain-verified profiles, showcasing skills, work history, and reviews. This decentralized data ensures tamper-proof credibility, fostering trust.
 
 ### 2) Milestone-Based Project Management
