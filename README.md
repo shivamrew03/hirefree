@@ -2,6 +2,7 @@
 <p align="center">
   <img src="public/logojj.png" alt="HireFree Logo" width="200" />
 </p>
+
 ## 🪶 Overview
 HireFree is transforming the freelancing landscape with a cutting-edge blockchain-powered ecosystem designed for seamless, transparent, and secure professional collaboration. Leveraging advanced decentralized technologies, HireFree redefines how professionals connect, work, and get rewarded on a global scale.
 
