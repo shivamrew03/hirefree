@@ -1,134 +1,122 @@
-<!-- @format -->
+# HireFree: Revolutionizing Freelance Collaboration 🚀
+<p align="center">
+  <img src="public/logojj.png" alt="HireFree Logo" width="200" />
+</p>
 
-# Request Invoicing (Invoicing Template)
+## 🪶 Overview
+HireFree is transforming the freelancing landscape with a cutting-edge blockchain-powered ecosystem designed for seamless, transparent, and secure professional collaboration. Leveraging advanced decentralized technologies, HireFree redefines how professionals connect, work, and get rewarded on a global scale.
 
-A simple invoicing template for creating, paying, and viewing requests in Request Network.
+At the heart of HireFree's unique proposition lies its milestone-based invoicing system powered by Request Network and XMTP bot in the converse app for notifications/frames about projects and invoices, a critical innovation in today’s fast-paced professional world. This feature ensures payment transparency, financial security, and streamlined cash flow management, ease of use, eliminating disputes and fostering trust between clients and freelancers.
 
-Built with:
+## ✏️ Key Features
 
-- [Next.js](https://nextjs.org/)
-- [React](https://reactjs.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Request Network](https://request.network/)
-- [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
+### 1) Decentralized Freelancer Profiles : 
+Freelancers can create and maintain blockchain-verified profiles, showcasing skills, work history, and reviews. This decentralized data ensures tamper-proof credibility, fostering trust.
 
-## Install
+### 2) Milestone-Based Project Management
+Projects are broken into clearly defined milestones, allowing hirers and freelancers to track progress and payments effortlessly. Each milestone completion triggers an automated invoice for approval and payment.
 
-```
-npm install
-```
+### 3) Blockchain-Powered Invoicing with Request Network
+HireFree’s invoicing system automates the entire payment process:
 
-## Run
+- Instant Invoice Generation: Freelancers generate invoices for completed milestones with one click.
+- Real-Time Payment Tracking: Both parties can monitor transaction status.
+- Low-Cost Transactions: HireFree minimizes fees associated with traditional payment methods.
 
-```
-npm run start
-```
+### 4) XMTP Bot for Instant Notifications
+To enhance communication and efficiency, HireFree integrates the XMTP bot within the Converse app.
 
-## Develop
+- Freelancer Notifications: Get notified immediately when a project is assigned.
+- Hirer Notifications: Receive updates when freelancers submit milestone invoices.
+- Interactive Payment Frame: Hirers can pay directly through the notification frame, ensuring a smooth payment experience.
 
-```
-cp .env.example .env.local
-npm run dev
-```
+### 5) Secure Cross-Platform Collaboration
 
-## Deploy
+Every transaction is recorded on the blockchain, providing an immutable ledger for dispute-free financial management.
 
-Deploy with Vercel:
+## 🛂 Core Technologies
+- **Request Network**: Powering Invoice and Payment Infrastructure
+- **Tableland**: : Provides decentralized, scalable data storage for profiles and project details.
+- **Blockchain**: Guarantees transparency, security, and tamper-proof records.
+- **XMTP Protocol**: Powers real-time communication through decentralized messaging.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FRequestNetwork%2Finvoicing-template&env=NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID&envDescription=Before%20deploying%2C%20ensure%20you%20have%20created%20a%20.env%20or%20.env.local%20file%20in%20the%20root%20of%20your%20project.%20Below%20is%20a%20list%20of%20available%20environment%20variables.%20You%20can%20also%20take%20a%20look%20at%20the%20.env.example%20file%20for%20reference.&envLink=https%3A%2F%2Fgithub.com%2FRequestNetwork%2Finvoicing-template%3Ftab%3Dreadme-ov-file%23environment-variables&project-name=invoicing-template&repository-name=invoicing-template&demo-title=Request%20Invoicing&demo-description=Request%20Invoicing&demo-url=https%3A%2F%2Finvoicing.request.network%2F&demo-image=https%3A%2F%2Finvoicing.request.network%2Fassets%2Flogo.svg)
+## 🏡 Platform Architecture
 
-We deploy to an [EasyPanel](https://easypanel.io/) server using Github Actions and [Heroku Buildpacks](https://devcenter.heroku.com/articles/buildpacks). You could easily deploy to Vercel, Netlify, or any other platform.
+### HireFree Architecture
+<p align="center">
+  <img src="public/Basic Architecture.png" alt="Hyper Harvest Architecture" width="1000" />
+</p>
 
-- [deploy-to-staging.yml](/.github/workflows/deploy-to-staging.yml) - Deploy to Staging on push to `main` branch.
-- [deploy-to-production.yml](/.github/workflows/deploy-to-production.yml) - Deploy to Production on release published in Github.
+### Project Workflow
+<p align="center">
+  <img src="public/Project Workflow.png" alt="Hyper Harvest Architecture" width="1000" />
+</p>
 
-## Environment Variables
+### Data Flow Diagram
+<p align="center">
+  <img src="public/HireFree DFD.png" alt="Hyper Harvest Architecture" width="1000" />
+</p>
 
-Before deploying, ensure you have created a `.env` or `.env.local` file in the root of your project. Below is a list of available environment variables. You can also take a look at the [.env.example](./.env.example) file for reference.
 
-> **:warning: WARNING:** The default `PAYMENTS_SUBGRAPH_URL`s are rate-limited and can be replaced with your own subgraph URLs.
+## 🔥 Request Network Integration
 
-| Variable Name                                  | Description                          | Required |
-| ---------------------------------------------- | ------------------------------------ | -------- |
-| NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID          | Your Wallet Connect Project ID       | ✅       |
-| NEXT_PUBLIC_RPC_URL_ARBITRUM_ONE               | RPC URL for Arbitrum One             | ❌       |
-| NEXT_PUBLIC_RPC_URL_AVALANCHE                  | RPC URL for Avalanche                | ❌       |
-| NEXT_PUBLIC_RPC_URL_BASE                       | RPC URL for Base                     | ❌       |
-| NEXT_PUBLIC_RPC_URL_BSC                        | RPC URL for Binance Smart Chain      | ❌       |
-| NEXT_PUBLIC_RPC_URL_CELO                       | RPC URL for Celo                     | ❌       |
-| NEXT_PUBLIC_RPC_URL_CORE                       | RPC URL for Core                     | ❌       |
-| NEXT_PUBLIC_RPC_URL_FANTOM                     | RPC URL for Fantom                   | ❌       |
-| NEXT_PUBLIC_RPC_URL_FUSE                       | RPC URL for Fuse                     | ❌       |
-| NEXT_PUBLIC_RPC_URL_ETHEREUM                   | RPC URL for Ethereum                 | ❌       |
-| NEXT_PUBLIC_RPC_URL_POLYGON                    | RPC URL for Polygon                  | ❌       |
-| NEXT_PUBLIC_RPC_URL_MOONBEAM                   | RPC URL for Moonbeam                 | ❌       |
-| NEXT_PUBLIC_RPC_URL_OPTIMISM                   | RPC URL for Optimism                 | ❌       |
-| NEXT_PUBLIC_RPC_URL_SEPOLIA                    | RPC URL for Sepolia                  | ❌       |
-| NEXT_PUBLIC_RPC_URL_XDAI                       | RPC URL for Gnosis                   | ❌       |
-| NEXT_PUBLIC_RPC_URL_ZKSYNCERA                  | RPC URL for ZkSyncEra                | ❌       |
-| NEXT_PUBLIC_PAYMENTS_SUBGRAPH_URL_ARBITRUM_ONE | Subgraph URL for Arbitrum One        | ❌       |
-| NEXT_PUBLIC_PAYMENTS_SUBGRAPH_URL_AVALANCHE    | Subgraph URL for Avalanche           | ❌       |
-| NEXT_PUBLIC_PAYMENTS_SUBGRAPH_URL_BASE         | Subgraph URL for Base                | ❌       |
-| NEXT_PUBLIC_PAYMENTS_SUBGRAPH_URL_BSC          | Subgraph URL for Binance Smart Chain | ❌       |
-| NEXT_PUBLIC_PAYMENTS_SUBGRAPH_URL_CELO         | Subgraph URL for Celo                | ❌       |
-| NEXT_PUBLIC_PAYMENTS_SUBGRAPH_URL_CORE         | Subgraph URL for Core                | ❌       |
-| NEXT_PUBLIC_PAYMENTS_SUBGRAPH_URL_FANTOM       | Subgraph URL for Fantom              | ❌       |
-| NEXT_PUBLIC_PAYMENTS_SUBGRAPH_URL_FUSE         | Subgraph URL for Fuse                | ❌       |
-| NEXT_PUBLIC_PAYMENTS_SUBGRAPH_URL_MAINNET      | Subgraph URL for Mainnet             | ❌       |
-| NEXT_PUBLIC_PAYMENTS_SUBGRAPH_URL_MATIC        | Subgraph URL for Matic               | ❌       |
-| NEXT_PUBLIC_PAYMENTS_SUBGRAPH_URL_MOONBEAM     | Subgraph URL for Moonbeam            | ❌       |
-| NEXT_PUBLIC_PAYMENTS_SUBGRAPH_URL_OPTIMISM     | Subgraph URL for Optimism            | ❌       |
-| NEXT_PUBLIC_PAYMENTS_SUBGRAPH_URL_SEPOLIA      | Subgraph URL for Sepolia             | ❌       |
-| NEXT_PUBLIC_PAYMENTS_SUBGRAPH_URL_XDAI         | Subgraph URL for Gnosis              | ❌       |
-| NEXT_PUBLIC_PAYMENTS_SUBGRAPH_URL_ZKSYNCERA    | Subgraph URL for ZkSyncEra           | ❌       |
-| NEXT_PUBLIC_GTM_ID                             | Google Tag Manager ID                | ❌       |
+### How Request Network Powers HireFree
+- **Automating Invoice Creation**: Freelancers can generate detailed invoices tied to milestone completion.
+- **Providing Real-Time Payment Tracking**: Provides both parties with visibility into payment status.
 
-## Configuration
+#### Key Invoicing Capabilities
+- **Milestone-Specific Invoices**: Payments tied to clear deliverables, ensuring accountability.
+- **Instant Payment Settlements**: Payments are processed instantly upon milestone approval.
+- **Transparent Financial Tracking**: Immutable ledger for dispute resolution and financial clarity.
+- **Low-Cost Transactions**: Reduces intermediary fees, benefiting both freelancers and hirers.
 
-This configuration file (`wagmiConfig.ts`) is used to set up the wallet connection functionality for the Request Invoicing platform, leveraging `wagmi` and `RainbowKit`.
 
-It supports multiple blockchain networks and a wide variety of wallet providers. The configuration is structured to allow easy integration of wallet connections in a React or Next.js app.
+## 💬 User Experience
 
-## Configuration Details
+### Freelancer Journey
+1. **Create Profile**: Build a blockchain-verified professional portfolio.
+2. **Browse Project**: Discover opportunities that match your expertise.
+3. **Submit Proposals**: Secure projects by showcasing skills and past work.
+4. **Complete Milestones**: Deliver tasks as defined.
+5. **Generate Invoices**: Automate invoicing for completed work.
+6. **Receive Instant Payments**: Instant settlements via Request Network.
 
-## [wagmiConfig](https://github.com/RequestNetwork/invoicing-template/blob/main/utils/wagmiConfig.ts)
+### Hirer Experience
+1. **Post Project**: Define scope, milestones, and requirements.
+2. **Review Profiles**: Evaluate freelancers through transparent profiles.
+3. **Assign Projects**: Select the best-suited professionals and assign milestones for the project.
+4. **Approve Milestone Completions**: Monitor milestone completion. 
+5. **Make Instant Payments**: Pay freelancers instantly upon milestone approval.
 
-### Chains
+## 🔮 Competitive Advantages
 
-The following chains are supported in the current setup:
+### Traditional Platforms vs HireFree
+| Feature | Traditional Platforms | HireFree |
+|---------|----------------------|----------|
+| Payment Transparency | Limited | Full Blockchain Transparency |
+| Invoice Generation | Manual | Automated via Request Network |
+| Payment Speed | 7-30 Days | Instant Settlement |
+| Fee Structure | High Intermediary Fees | Minimized Transaction Costs |
 
-- Binance Smart Chain (BSC)
-- Celo
-- Base
-- Fuse
-- zkSync
-- Fantom
-- CoreDAO
-- Polygon
-- Ethereum Mainnet
-- Sepolia
-- Arbitrum
-- Moonbeam
-- Optimism
-- Avalanche
-- Gnosis
 
-### Wallets
+## 📋 Getting Started
+1. Install Web3 Wallet
+2. Connect to HireFree Platform
+3. Create User Profile
+4. Download converse app and use this address : 
+5. Start Collaborating and receive notifications
 
-The following wallets are grouped into two categories:
+## 💡 Unique Value Proposition
+HireFree eliminates traditional freelancing pain points by providing:
+- Instant Milestone Payments
+- Transparent Project Tracking
+- Reduced Administrative Overhead
+- Global Collaboration Opportunities
 
-- **Recommended Wallets**:
+## 🌐 Global Impact 
+By democratizing freelance financial management, HireFree empowers professionals worldwide to:
 
-  - Injected Wallets
-  - MetaMask
-  - WalletConnect
-
-- **Other Wallets**:
-  - Safe Wallet
-  - Coinbase Wallet
-  - Ledger Wallet
-  - Trust Wallet
-
-### Transports (RPC URLs)
-
-Each chain is assigned an RPC URL, either from environment variables or using a default public RPC. You can configure these in your `.env` file using variables like `NEXT_PUBLIC_RPC_URL_<CHAIN_NAME>`.
+- Manage international projects seamlessly
+- Reduce financial friction
+- Gain complete visibility into earnings
+- Simplify complex financial workflows
