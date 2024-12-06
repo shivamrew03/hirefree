@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
+import { useWalletClient } from "wagmi";
+import { RequestNetwork, Types, Utils } from "@requestnetwork/request-client.js";
+import { Web3SignatureProvider } from "@requestnetwork/web3-signature";
 import Head from "next/head";
-import Link from "next/link";
+import { ethers } from "ethers";
+import { getRequestParameters } from '../../hooks/useInvoice';
 
 interface Milestone {
   name: string;
@@ -25,6 +29,7 @@ interface Project {
 
 export default function ProjectDetails() {
   const router = useRouter();
+  const { data: walletClient } = useWalletClient();
   const { query } = router;
   const parsedMilestones = query.milestones ? JSON.parse(String(query.milestones)) : [];
 
@@ -42,23 +47,50 @@ export default function ProjectDetails() {
 
   const handleCreateInvoice = async (milestoneIndex: number) => {
     try {
-      await fetch('/api/project/updateMilestone', {
+      const web3SignatureProvider = new Web3SignatureProvider(walletClient);
+      console.log("req started",walletClient)
+
+      const requestClient = new RequestNetwork({
+        nodeConnectionConfig: { 
+          baseURL: "https://sepolia.gateway.request.network/",
+        },
+        signatureProvider: web3SignatureProvider,
+      });
+      
+      const milestone = parsedMilestones[milestoneIndex];
+      
+      const requestParameters = getRequestParameters(
+        project.freelancer_address,
+        project.client_address,
+        milestone.amount,
+        milestoneIndex,
+        project.title,
+        project.id.toString()
+      );
+      
+      const request = await requestClient.createRequest(requestParameters);
+      const confrm = await request.waitForConfirmation();
+      
+      const result = await fetch('/api/project/updateMilestone', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           projectId: project.id,
-          milestoneIndex
+          milestoneIndex,
         }),
       });
-
-      router.push('/create-invoice');
+      
+      alert('Invoice created successfully!');
+      router.push('/home');  // This will redirect to the home page
     } catch (error) {
-      console.error('Error updating milestone:', error);
+      console.error('Error creating invoice:', error);
+      // alert('Error creating invoice. Please try again.');
     }
-  };
+};
 
+  
   return (
     <>
       <Head>

@@ -47,7 +47,7 @@ const Navbar = () => {
         className="flex items-center h-full"
       >
         <img
-          src="assets/logojj.png"
+          src="https://ibb.co/99VDMGP"
           alt="HireFree Logo"
           className="h-[80px] w-auto object-contain"
         />

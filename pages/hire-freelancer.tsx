@@ -84,11 +84,17 @@ const HireFreelancer = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+  
     if (!address || !selectedFreelancer) {
       alert('Please connect your wallet first');
       return;
     }
+
+    // Add completed:false to each milestone
+    const milestonesWithStatus = projectDetails.milestones.map(milestone => ({
+      ...milestone,
+      completed: false
+    }));
 
     try {
       const response = await fetch('/api/project/create', {
@@ -103,7 +109,7 @@ const HireFreelancer = () => {
           description: projectDetails.description,
           budget: projectDetails.budget,
           timeline: projectDetails.timeline,
-          milestones: projectDetails.milestones
+          milestones: milestonesWithStatus
         }),
       });
 
@@ -127,7 +133,6 @@ const HireFreelancer = () => {
       alert('Failed to submit project request. Please try again.');
     }
   };
-
   return (
     <>
       <Head>

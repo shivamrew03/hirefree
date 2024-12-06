@@ -1,11 +1,17 @@
 import { ethers } from 'ethers';
 import { Database } from "@tableland/sdk";
-
+import { RequestNetwork, Types, Utils } from '@requestnetwork/request-client.js';
+import { Web3SignatureProvider } from '@requestnetwork/web3-signature';
+import { EthereumPrivateKeySignatureProvider } from '@requestnetwork/epk-signature';
+import { timeStamp } from 'console';
 const PRIVATE_KEY = process.env.PRIVATE_KEY as string;
 export const provider = new ethers.providers.JsonRpcProvider("https://opt-sepolia.g.alchemy.com/v2/PIpC3AUw63Vk0R0AGqLR-WEWBgs8MvkP");
 export const signer = new ethers.Wallet(PRIVATE_KEY, provider);
 export const db = new Database({ signer });
-
+const epkSignatureProvider = new EthereumPrivateKeySignatureProvider({
+  method: Types.Signature.METHOD.ECDSA,
+  privateKey: process.env.PVT as string,
+})
 const prefix = 'freelancers';
 const chainId = 11155420;
 
@@ -242,7 +248,6 @@ export async function getProjectsByFreelancer(freelancer_address: string): Promi
     .bind(freelancer_address)
     .all();
   
-  console.log("results are:", results);
   return results.map(row => ({
     id: Number(row.id),
     client_address: String(row.client_address),
@@ -277,24 +282,33 @@ export async function getProjectById(id: string): Promise<Project | null> {
     description: String(row.description),
     budget: Number(row.budget),
     timeline: Number(row.timeline),
-    milestones: String(row.milestones),
+    milestones: row.milestones,
     status: String(row.status),
     timestamp: Number(row.timestamp)
   };
 }
 
+
 export async function updateMilestoneStatus(projectId: string, milestoneIndex: number): Promise<void> {
+  const tableName = "projects_11155420_173";
   const project = await getProjectById(projectId);
+  
   if (!project) return;
 
-  const milestones = JSON.parse(project.milestones);
-  milestones[milestoneIndex].completed = true;
-
-  const tableName = "projects_11155420_167";
+  // Parse the milestones string to array of objects
+  const milestones = project.milestones;
   
+  // Update the specific milestone's completed status
+  milestones[milestoneIndex].completed = true;
+  
+  // Convert back to string for storage
+  const updatedMilestones = JSON.stringify(milestones);
+  console.log(updatedMilestones)
   const { meta: update } = await db
-    .prepare(`UPDATE ${tableName} SET milestones = ? WHERE id = ?;`)
-    .bind(JSON.stringify(milestones), projectId)
+    .prepare(`UPDATE ${tableName} 
+             SET milestones = ? 
+             WHERE id = ?;`)
+    .bind(updatedMilestones, projectId)
     .run();
 
   if (update?.txn) {

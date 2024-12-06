@@ -14,4 +14,11 @@ export const currencies: CurrencyTypes.CurrencyInput[] = [
     decimals: 18,
     type: RequestLogicTypes.CURRENCY.ETH,
   },
+  {
+    symbol: "FUSDC",
+    address: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238", // Placeholder address
+    network: "sepolia",
+    decimals: 6,
+    type: RequestLogicTypes.CURRENCY.ERC20,
+  },
 ];
