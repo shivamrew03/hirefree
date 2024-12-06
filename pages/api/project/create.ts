@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createProject } from '@/utils/tableland';
+import { xmtpService } from '@/utils/xmtpService';
 
 export default async function handler(
   req: NextApiRequest,
@@ -24,7 +25,6 @@ export default async function handler(
     if (!clientAddress || !freelancerAddress || !title || !description || !budget || !timeline) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
-
     const result = await createProject({
       client_address: clientAddress,
       freelancer_address: freelancerAddress,
@@ -35,6 +35,17 @@ export default async function handler(
       milestones: JSON.stringify(milestones),
       status: 'PENDING'
     });
+    
+      // Send notification to freelancer
+    const notificationMessage = ` New project received!
+    Title: ${title}
+    Description: ${description}
+    Budget: ${budget}
+    Timeline: ${timeline} days
+    From: ${clientAddress}
+    `;
+      
+    await xmtpService.sendMessage(freelancerAddress, notificationMessage);
 
     res.status(201).json({ success: true, data: result });
   } catch (error) {
