@@ -1,6 +1,6 @@
 # HireFree: Revolutionizing Freelance Collaboration 🚀
 <p align="center">
-  <img src="public/logojj.png" alt="HireFree Logo" width="200" />
+  <img src="/packages/public/logojj.png" alt="HireFree Logo" width="200" />
 </p>
 
 ## 🪶 Overview
@@ -44,17 +44,17 @@ Every transaction is recorded on the blockchain, providing an immutable ledger f
 
 ### HireFree Architecture
 <p align="center">
-  <img src="public/Basic Architecture.png" alt="Hyper Harvest Architecture" width="1000" />
+  <img src="/packages/public/Basic Architecture.png" alt="Hyper Harvest Architecture" width="1000" />
 </p>
 
 ### Project Workflow
 <p align="center">
-  <img src="public/Project Workflow.png" alt="Hyper Harvest Architecture" width="1000" />
+  <img src="/packages/public/Project Workflow.png" alt="Hyper Harvest Architecture" width="1000" />
 </p>
 
 ### Data Flow Diagram
 <p align="center">
-  <img src="public/HireFree DFD.png" alt="Hyper Harvest Architecture" width="1000" />
+  <img src="/packages/public/HireFree DFD.png" alt="Hyper Harvest Architecture" width="1000" />
 </p>
 
 
