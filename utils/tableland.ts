@@ -1,12 +1,12 @@
-import { ethers } from 'ethers';
+import { ethers, Wallet } from 'ethers6';
 import { Database } from "@tableland/sdk";
 import { RequestNetwork, Types, Utils } from '@requestnetwork/request-client.js';
 import { Web3SignatureProvider } from '@requestnetwork/web3-signature';
 import { EthereumPrivateKeySignatureProvider } from '@requestnetwork/epk-signature';
 import { timeStamp } from 'console';
 const PRIVATE_KEY = process.env.PRIVATE_KEY as string;
-export const provider = new ethers.providers.JsonRpcProvider("https://opt-sepolia.g.alchemy.com/v2/PIpC3AUw63Vk0R0AGqLR-WEWBgs8MvkP");
-export const signer = new ethers.Wallet(PRIVATE_KEY, provider);
+export const provider = new ethers.JsonRpcProvider("https://opt-sepolia.g.alchemy.com/v2/PIpC3AUw63Vk0R0AGqLR-WEWBgs8MvkP");
+export const signer = new Wallet(PRIVATE_KEY, provider);
 export const db = new Database({ signer });
 const epkSignatureProvider = new EthereumPrivateKeySignatureProvider({
   method: Types.Signature.METHOD.ECDSA,
@@ -169,75 +169,37 @@ export async function createProjectTable() {
 
 export async function createProject(project: Omit<Project, 'id' | 'timestamp'>) {
   const tableName = "projects_11155420_173";
-  
-  try {
-    const { meta: insert } = await db
-      .prepare(`INSERT INTO ${tableName} (
-        client_address,
-        freelancer_address,
-        title,
-        description,
-        budget,
-        timeline,
-        milestones,
-        status,
-        timestamp
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`)
-      .bind(
-        project.client_address,
-        project.freelancer_address,
-        project.title,
-        project.description,
-        project.budget,
-        project.timeline,
-        project.milestones,
-        project.status,
-        Math.floor(Date.now() / 1000)
-      )
-      .run();
+  const { meta: insert } = await db
+    .prepare(`INSERT INTO ${tableName} (
+      client_address,
+      freelancer_address,
+      title,
+      description,
+      budget,
+      timeline,
+      milestones,
+      status,
+      timestamp
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`)
+    .bind(
+      project.client_address,
+      project.freelancer_address,
+      project.title,
+      project.description,
+      project.budget,
+      project.timeline,
+      project.milestones,
+      project.status,
+      Math.floor(Date.now() / 1000)
+    )
+    .run();
 
-    if (insert?.txn) {
-      await insert.txn.wait();
-    }
-    console.log("found table and inserted");
-    return insert;
-    
-  } catch (error) {
-    console.log("table not found, creating table...");
-    await createProjectTable();
-    console.log("created table");
-    
-    const { meta: insert } = await db
-      .prepare(`INSERT INTO ${tableName} (
-        client_address,
-        freelancer_address,
-        title,
-        description,
-        budget,
-        timeline,
-        milestones,
-        status,
-        timestamp
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`)
-      .bind(
-        project.client_address,
-        project.freelancer_address,
-        project.title,
-        project.description,
-        project.budget,
-        project.timeline,
-        project.milestones,
-        project.status,
-        Math.floor(Date.now() / 1000)
-      )
-      .run();
-
-    if (insert?.txn) {
-      await insert.txn.wait();
-    }
-    console.log("inserted data");
-    return insert;
+  if (insert?.txn) {
+    await insert.txn.wait();
   }
+  console.log("inserted data");
+  return insert;
+  
 }
 
 export async function getProjectsByFreelancer(freelancer_address: string): Promise<Project[]> {
@@ -309,6 +271,20 @@ export async function updateMilestoneStatus(projectId: string, milestoneIndex: n
              SET milestones = ? 
              WHERE id = ?;`)
     .bind(updatedMilestones, projectId)
+    .run();
+
+  if (update?.txn) {
+    await update.txn.wait();
+  }
+}
+export async function updateProjectStatus(projectId: string, status: string): Promise<void> {
+  const tableName = "projects_11155420_173";
+  
+  const { meta: update } = await db
+    .prepare(`UPDATE ${tableName} 
+             SET status = ? 
+             WHERE id = ?;`)
+    .bind(status, projectId)
     .run();
 
   if (update?.txn) {

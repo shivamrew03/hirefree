@@ -12,8 +12,8 @@ export const getRequestParameters = (
   return {
     requestInfo: {
       currency: {
-        type: Types.RequestLogic.CURRENCY.ETH,
-        value: "ETH",
+        type: Types.RequestLogic.CURRENCY.ERC20,
+        value: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
         network: "sepolia",
       },
       expectedAmount: ethers.utils.parseUnits(amount, 6).toString(),
@@ -32,7 +32,7 @@ export const getRequestParameters = (
       value: freelancerAddress
     },
     paymentNetwork: {
-      id: Types.Extension.PAYMENT_NETWORK_ID.ETH_FEE_PROXY_CONTRACT,
+      id: Types.Extension.PAYMENT_NETWORK_ID.ERC20_FEE_PROXY_CONTRACT,
       parameters: {
         paymentNetworkName: "sepolia",
         paymentAddress: freelancerAddress,
@@ -41,9 +41,8 @@ export const getRequestParameters = (
       }
     },
     contentData: {
-      purpose: `Payment for milestone ${milestoneIndex} - Project: ${projectTitle} (ID: ${projectId})`,
-      issueDate: Utils.getCurrentTimestampInSecond(),
-      dueDate: Utils.getCurrentTimestampInSecond() + 3600,
-    }
+      dueDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0].replace(/-/g, '.'),
+      purpose: `Payment for milestone ${milestoneIndex} - Project: ${projectTitle} (ID: ${projectId})`
+    },
   };
 };

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useAccount, useConnect } from 'wagmi';
-import Toast from '../../components/Toast';
+// import Toast from '../../components/Toast';
 import { ArrowUpRight, Close } from '../../icons';
 import { Sheet, SheetContent } from '../../components';
 import { motion } from 'framer-motion';
@@ -38,15 +38,15 @@ const FreelancerRegistration = () => {
   });
   const [error, setError] = useState<ErrorType>({ type: null, message: '' });
   const [loading, setLoading] = useState<boolean>(false);
-  const [toast, setToast] = useState<{
-    show: boolean;
-    message: string;
-    type: 'success' | 'error' | 'warning';
-  }>({
-    show: false,
-    message: '',
-    type: 'success'
-  });
+  // const [toast, setToast] = useState<{
+  //   show: boolean;
+  //   message: string;
+  //   type: 'success' | 'error' | 'warning';
+  // }>({
+  //   show: false,
+  //   message: '',
+  //   type: 'success'
+  // });
 
   const handleSkillsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const skills = e.target.value.split(',').map(skill => skill.trim());
@@ -83,21 +83,21 @@ const FreelancerRegistration = () => {
 
       if (!response.ok) {
         if (data.message === 'This wallet is already registered') {
-          setToast({
-            show: true,
-            message: 'This wallet is already registered',
-            type: 'warning'
-          });
+          // setToast({
+          //   show: true,
+          //   message: 'This wallet is already registered',
+          //   type: 'warning'
+          // });
           throw new Error('ALREADY_REGISTERED');
         }
         throw new Error('REGISTRATION_FAILED');
       }
 
-      setToast({
-        show: true,
-        message: 'Registration successful! Redirecting to dashboard...',
-        type: 'success'
-      });
+      // setToast({
+      //   show: true,
+      //   message: 'Registration successful! Redirecting to dashboard...',
+      //   type: 'success'
+      // });
       
       setTimeout(() => {
         router.push('/dashboard/freelancer');
@@ -113,15 +113,15 @@ const FreelancerRegistration = () => {
             });
             break;
           default:
-            setToast({
-              show: true,
-              message: 'Registration failed. Please try again later.',
-              type: 'error'
-            });
-            setError({
-              type: 'REGISTRATION_FAILED',
-              message: 'Registration failed. Please try again later.'
-            });
+            // setToast({
+            //   show: true,
+            //   message: 'Registration failed. Please try again later.',
+            //   type: 'error'
+            // });
+            // setError({
+            //   type: 'REGISTRATION_FAILED',
+            //   message: 'Registration failed. Please try again later.'
+            // });
         }
       }
     } finally {
@@ -334,12 +334,12 @@ const FreelancerRegistration = () => {
               </button>
             </form>
           )}
-          <Toast 
+          {/* <Toast 
             show={toast.show}
             message={toast.message}
             type={toast.type}
             onClose={() => setToast(prev => ({ ...prev, show: false }))}
-          />
+          /> */}
         </div>
       </div>
     </>

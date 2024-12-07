@@ -56,17 +56,17 @@ export default function ProjectDetails() {
   const handleCreateInvoice = async (milestoneIndex: number) => {
     try {
       const web3SignatureProvider = new Web3SignatureProvider(walletClient);
-      console.log("req started",walletClient)
+      console.log("req started", walletClient)
 
       const requestClient = new RequestNetwork({
-        nodeConnectionConfig: { 
+        nodeConnectionConfig: {
           baseURL: "https://sepolia.gateway.request.network/",
         },
         signatureProvider: web3SignatureProvider,
       });
-      
+
       const milestone = parsedMilestones[milestoneIndex];
-      
+
       const requestParameters = getRequestParameters(
         project.freelancer_address,
         project.client_address,
@@ -75,10 +75,10 @@ export default function ProjectDetails() {
         project.title,
         project.id.toString()
       );
-      
+
       const request = await requestClient.createRequest(requestParameters);
       const confrm = await request.waitForConfirmation();
-      
+
       const result = await fetch('/api/project/updateMilestone', {
         method: 'POST',
         headers: {
@@ -87,18 +87,56 @@ export default function ProjectDetails() {
         body: JSON.stringify({
           projectId: project.id,
           milestoneIndex,
+          clientAddress: project.client_address,
+          freelancerAddress: project.freelancer_address,
+          milestoneName: parsedMilestones[milestoneIndex].name,
+          milestoneAmount: parsedMilestones[milestoneIndex].amount
         }),
       });
-      
+  
+      // Check if this was the last milestone
+      if (milestoneIndex === parsedMilestones.length - 1) {
+        // Update project status to completed
+        await fetch('/api/project/updateStatus', {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            projectId: project.id,
+            status: 'COMPLETED'
+          }),
+        });
+      }
+  
       alert('Invoice created successfully!');
-      router.push('/home');  // This will redirect to the home page
+      router.push('/home');
+      
     } catch (error) {
       console.error('Error creating invoice:', error);
-      // alert('Error creating invoice. Please try again.');
     }
-};
+  };
 
+  const CheckIcon = () => (
+    <div className="h-10 w-10 rounded-full border-4 border-emerald-600 bg-emerald-50 flex items-center justify-center">
+      <svg 
+        className="h-7 w-7 text-emerald-500" 
+        fill="none" 
+        viewBox="0 0 24 24" 
+        stroke="currentColor"
+      >
+        <path 
+          strokeLinecap="round" 
+          strokeLinejoin="round" 
+          strokeWidth={5}  
+          d="M5 13l4 4L19 7" 
+        />
+      </svg>
+    </div>
+  );
   
+
+
   return (
     <>
       <Head>
@@ -162,18 +200,14 @@ export default function ProjectDetails() {
               {parsedMilestones.map((milestone, index) => (
                 <div
                   key={index}
-                  className={`p-6 rounded-xl border transition-all duration-300 hover:shadow-lg ${
-                    completedMilestones.includes(index)
+                  className={`p-6 rounded-xl border transition-all duration-300 hover:shadow-lg ${milestone.completed
                       ? "bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200"
                       : "bg-white border-gray-200"
-                  }`}
+                    }`}
                 >
                   <div className="flex justify-between items-center">
                     <div>
-                      <h3 className="font-bold text-lg flex items-center gap-2">
-                        {completedMilestones.includes(index) && (
-                          <span className="text-emerald-500 text-xl">✓</span>
-                        )}
+                      <h3 className="font-bold text-lg">
                         {milestone.name}
                       </h3>
                       <p className="text-gray-600 mt-2">
@@ -183,13 +217,17 @@ export default function ProjectDetails() {
                         </span>
                       </p>
                     </div>
-                    {!completedMilestones.includes(index) && (
-                      <button
-                        onClick={() => handleCreateInvoice(index)}
-                        className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:opacity-90 transition-all duration-300 shadow-md hover:shadow-xl transform hover:-translate-y-0.5 font-medium"
-                      >
-                        Create Invoice
-                      </button>
+                    {milestone.completed ? (
+                      <CheckIcon />
+                    ) : (
+                      index === parsedMilestones.findIndex(m => !m.completed) && (
+                        <button
+                          onClick={() => handleCreateInvoice(index)}
+                          className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:opacity-90 transition-all duration-300 shadow-md hover:shadow-xl transform hover:-translate-y-0.5 font-medium"
+                        >
+                          Create Invoice
+                        </button>
+                      )
                     )}
                   </div>
                 </div>

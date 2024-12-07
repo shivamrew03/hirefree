@@ -12,16 +12,16 @@ import { useAccount } from "wagmi";
 import axios from "axios";
 
 const InvoiceDashboard = dynamic(
-  () => {
-    // Ensure web component is loaded only once in the client
-    if (
-      typeof window !== "undefined" &&
-      !customElements.get("invoice-dashboard")
-    ) {
-      require("@requestnetwork/invoice-dashboard");
-    }
-    return import("@requestnetwork/invoice-dashboard/react");
-  },
+  () => import("@requestnetwork/invoice-dashboard/react").then((mod) => {
+    return function WrappedDashboard(props: any) {
+      return (
+        <div className="invoice-dashboard-container">
+          {/* @ts-ignore */}
+          <mod.default {...props} />
+        </div>
+      );
+    };
+  }),
   { ssr: false, loading: () => <Spinner /> }
 );
 export default function InvoiceDashboardPage() {
@@ -32,27 +32,7 @@ export default function InvoiceDashboardPage() {
   const [requestCount, setRequestCount] = useState<number>(0);
   const [ethPrice, setEthPrice] = useState<number>(0);
 
-  useEffect(() => {
-    const fetchEthPrice = async () => {
-      try {
-        // Primary endpoint
-        const response = await axios.get(
-          "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"
-        );
-        setEthPrice(response.data.USD);
-      } catch (error) {
-        // Fallback to a default value
-        setEthPrice(3000); // Default ETH price as fallback
-        console.log("Using default ETH price due to API limitation");
-      }
-    };
 
-    fetchEthPrice();
-    // Refresh price every 5 minutes
-    const interval = setInterval(fetchEthPrice, 300000);
-
-    return () => clearInterval(interval);
-  }, []);
   useEffect(() => {
     const fetchTotalAmount = async () => {
       if (!requestNetwork || !address) return;
@@ -78,8 +58,8 @@ export default function InvoiceDashboardPage() {
           { expectedTotal: BigInt(0), receivedTotal: BigInt(0) }
         );
 
-        setTotalExpectedAmount(formatUnits(expectedTotal, 18));
-        setTotalReceivedAmount(formatUnits(receivedTotal, 18));
+        setTotalExpectedAmount(Number(formatUnits(expectedTotal, 18)).toFixed(2));
+        setTotalReceivedAmount(Number(formatUnits(receivedTotal, 18)).toFixed(2));
       } catch (error) {
         console.error("Failed to fetch amounts:", error);
       }
@@ -88,13 +68,7 @@ export default function InvoiceDashboardPage() {
     fetchTotalAmount();
   }, [requestNetwork, address]);
 
-  const formatUSD = (ethAmount: string) => {
-    const usdAmount = parseFloat(ethAmount) * ethPrice;
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(usdAmount);
-  };
+
 
   return (
     <>
@@ -115,11 +89,9 @@ export default function InvoiceDashboardPage() {
                     Expected
                   </p>
                   <p className="mt-2 text-3xl font-bold text-blue-600">
-                    {totalExpectedAmount} ETH
+                    {totalExpectedAmount} USDC
                   </p>
-                  <p className="text-lg text-blue-400">
-                    {formatUSD(totalExpectedAmount)}
-                  </p>
+
                 </div>
                 <div className="bg-blue-100 rounded-full p-3">
                   <svg
@@ -146,11 +118,9 @@ export default function InvoiceDashboardPage() {
                     Received
                   </p>
                   <p className="mt-2 text-3xl font-bold text-green-600">
-                    {totalReceivedAmount} ETH
+                    {totalReceivedAmount} USDC
                   </p>
-                  <p className="text-lg text-green-400">
-                    {formatUSD(totalReceivedAmount)}
-                  </p>
+
                 </div>
                 <div className="bg-green-100 rounded-full p-3">
                   <svg
@@ -202,6 +172,7 @@ export default function InvoiceDashboardPage() {
 
           <div className="bg-white rounded-xl shadow-lg p-6">
             <InvoiceDashboard
+              key="invoice-dashboard"
               config={config}
               currencies={currencies}
               requestNetwork={requestNetwork}
