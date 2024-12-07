@@ -197,7 +197,7 @@ export default function ProjectDetails() {
               Project Milestones
             </h2>
             <div className="space-y-4">
-              {parsedMilestones.map((milestone, index) => (
+              {parsedMilestones.map((milestone: any, index: any) => (
                 <div
                   key={index}
                   className={`p-6 rounded-xl border transition-all duration-300 hover:shadow-lg ${milestone.completed
@@ -220,8 +220,7 @@ export default function ProjectDetails() {
                     {milestone.completed ? (
                       <CheckIcon />
                     ) : (
-                      index === parsedMilestones.findIndex(m => !m.completed) && (
-                        <button
+                      index === parsedMilestones.findIndex((m: { completed: boolean })  => !m.completed) && (                        <button
                           onClick={() => handleCreateInvoice(index)}
                           className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:opacity-90 transition-all duration-300 shadow-md hover:shadow-xl transform hover:-translate-y-0.5 font-medium"
                         >

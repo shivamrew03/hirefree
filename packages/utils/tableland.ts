@@ -36,7 +36,7 @@ export interface Project {
   description: string;
   budget: number;
   timeline: number;
-  milestones: string;
+  milestones: any;
   status: string;
   timestamp: number;
 }
@@ -202,7 +202,7 @@ export async function createProject(project: Omit<Project, 'id' | 'timestamp'>) 
   
 }
 
-export async function getProjectsByFreelancer(freelancer_address: string): Promise<Project[]> {
+export async function getProjectsByFreelancer(freelancer_address: string): Promise<any> {
   const tableName = "projects_11155420_173";
   console.log(freelancer_address);
   const { results } = await db
