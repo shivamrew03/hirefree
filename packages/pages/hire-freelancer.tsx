@@ -137,7 +137,7 @@ const HireFreelancer = () => {
     if (totalMilestoneAmount !== Number(projectDetails.budget)) {
       setToast({
         show: true,
-        message: `Total milestone amounts must equal to the project budget`,
+        message: `Total milestone amounts must be equal to the project budget`,
         type: 'error'
       });
       return;
