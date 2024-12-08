@@ -53,6 +53,13 @@ const HireFreelancer = () => {
     fetchFreelancers();
   }, []);
 
+  const calculateTotalMilestoneAmount = () => {
+    return projectDetails.milestones.reduce((sum, milestone) =>
+      sum + Number(milestone.amount), 0
+    );
+  };
+
+
   const handleContactClick = (freelancer: Freelancer) => {
     if (!address) {
       setToast({
@@ -65,7 +72,7 @@ const HireFreelancer = () => {
     setSelectedFreelancer(freelancer);
     setShowModal(true);
   };
-  
+
 
   const addMilestone = () => {
     setProjectDetails({
@@ -115,6 +122,24 @@ const HireFreelancer = () => {
 
     if (!address || !selectedFreelancer) {
       alert("Please connect your wallet first");
+      return;
+    }
+    if (projectDetails.milestones.length === 0) {
+      setToast({
+        show: true,
+        message: 'Please add at least one milestone before submitting',
+        type: 'error'
+      });
+      return;
+    }
+
+    const totalMilestoneAmount = calculateTotalMilestoneAmount();
+    if (totalMilestoneAmount !== Number(projectDetails.budget)) {
+      setToast({
+        show: true,
+        message: `Total milestone amounts must equal to the project budget`,
+        type: 'error'
+      });
       return;
     }
 
