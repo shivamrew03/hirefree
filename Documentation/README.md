@@ -18,4 +18,4 @@ HireFree Website : [hirefree.vercel.app](https://hirefree.vercel.app/)
 
 Github Repo : [https://github.com/shivamrew03/hirefree](https://github.com/shivamrew03/hirefree)
 
-XMTP Bot (Converse App) :&#x20;
+XMTP Bot (Converse App) : 0x549cB02B9828e341C25D4FDFCE0733000FcF64dB
