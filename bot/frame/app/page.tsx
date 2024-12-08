@@ -3,15 +3,14 @@ import { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "HireFree Dashboard",
-    description: "View and manage your invoices on HireFree",
+    title: "Open Frames Next.js Example",
     other: {
       ...(await fetchMetadata(
         new URL(
-          "/frames/dashboard",
+          "/frames",
           process.env.VERCEL_URL
             ? `https://${process.env.VERCEL_URL}`
-            : "http://localhost:3001"
+            : "http://localhost:3000"
         )
       )),
     },
@@ -19,5 +18,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-  return <div>HireFree Dashboard Frame</div>;
+  return <div>Open Frames Next.js Example</div>;
 }
