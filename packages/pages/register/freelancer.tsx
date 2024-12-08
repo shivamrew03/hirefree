@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useAccount, useConnect } from 'wagmi';
-// import Toast from '../../components/Toast';
+import Toast from '../../components/Toast';
 import { ArrowUpRight, Close } from '../../icons';
 import { Sheet, SheetContent } from '../../components';
 import { motion } from 'framer-motion';
@@ -38,15 +38,15 @@ const FreelancerRegistration = () => {
   });
   const [error, setError] = useState<ErrorType>({ type: null, message: '' });
   const [loading, setLoading] = useState<boolean>(false);
-  // const [toast, setToast] = useState<{
-  //   show: boolean;
-  //   message: string;
-  //   type: 'success' | 'error' | 'warning';
-  // }>({
-  //   show: false,
-  //   message: '',
-  //   type: 'success'
-  // });
+  const [toast, setToast] = useState<{
+    show: boolean;
+    message: string;
+    type: 'success' | 'error' | 'warning';
+  }>({
+    show: false,
+    message: '',
+    type: 'success'
+  });
 
   const handleSkillsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const skills = e.target.value.split(',').map(skill => skill.trim());
@@ -83,25 +83,25 @@ const FreelancerRegistration = () => {
 
       if (!response.ok) {
         if (data.message === 'This wallet is already registered') {
-          // setToast({
-          //   show: true,
-          //   message: 'This wallet is already registered',
-          //   type: 'warning'
-          // });
+          setToast({
+            show: true,
+            message: 'This wallet is already registered',
+            type: 'warning'
+          });
           throw new Error('ALREADY_REGISTERED');
         }
         throw new Error('REGISTRATION_FAILED');
       }
 
-      // setToast({
-      //   show: true,
-      //   message: 'Registration successful! Redirecting to dashboard...',
-      //   type: 'success'
-      // });
+      setToast({
+        show: true,
+        message: 'Registration successful! Redirecting to dashboard...',
+        type: 'success'
+      });
       
       setTimeout(() => {
-        router.push('/dashboard/freelancer');
-      }, 2000);
+        router.push('/home');
+      }, 3000);
 
     } catch (err) {
       if (err instanceof Error) {
@@ -113,15 +113,15 @@ const FreelancerRegistration = () => {
             });
             break;
           default:
-            // setToast({
-            //   show: true,
-            //   message: 'Registration failed. Please try again later.',
-            //   type: 'error'
-            // });
-            // setError({
-            //   type: 'REGISTRATION_FAILED',
-            //   message: 'Registration failed. Please try again later.'
-            // });
+            setToast({
+              show: true,
+              message: 'Registration failed. Please try again later.',
+              type: 'error'
+            });
+            setError({
+              type: 'REGISTRATION_FAILED',
+              message: 'Registration failed. Please try again later.'
+            });
         }
       }
     } finally {
@@ -195,20 +195,11 @@ const FreelancerRegistration = () => {
           <ErrorMessage error={error} />
 
           {!address ? (
-            <div className="text-center mb-8 p-6 bg-white rounded-lg shadow-sm">
+            <div className="text-center mb-8 p-6 bg-white rounded-lg">
               <h2 className="text-2xl font-bold mb-4">Connect Your Wallet</h2>
               <p className="text-gray-600 mb-6">
                 Please connect your wallet to continue with registration
               </p>
-              {connectors.map((connector) => (
-                <button
-                  key={connector.id}
-                  onClick={() => connect({ connector })}
-                  className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  Connect {connector.name}
-                </button>
-              ))}
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -334,12 +325,12 @@ const FreelancerRegistration = () => {
               </button>
             </form>
           )}
-          {/* <Toast 
+          <Toast 
             show={toast.show}
             message={toast.message}
             type={toast.type}
             onClose={() => setToast(prev => ({ ...prev, show: false }))}
-          /> */}
+          />
         </div>
       </div>
     </>

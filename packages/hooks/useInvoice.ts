@@ -41,7 +41,6 @@ export const getRequestParameters = (
       }
     },
     contentData: {
-      dueDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0].replace(/-/g, '.'),
       purpose: `Payment for milestone ${milestoneIndex} - Project: ${projectTitle} (ID: ${projectId})`
     },
   };

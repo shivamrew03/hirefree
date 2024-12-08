@@ -26,24 +26,25 @@ const Navbar = () => {
       name: "Overview",
       href: "/home",
     },
-    {
-      name: "My projects",
-      href: `/${address}/projects`,
-    },
+    ...(isConnected ? [
+      {
+        name: "My projects",
+        href: `/${address}/projects`,
+      },
+      {
+        name: "Register as freelancer",
+        href: "/register/freelancer"
+      }
+    ] : []),
     {
       name: "Hire a freelancer",
       href: "/hire-freelancer",
-    },{
-      name: "Register as freelancer",
-      href: "/register/freelancer"
     }
   ];
   return (
     <nav className="relative h-[80px] flex items-center pr-6 lg:pr-12 bg-white shadow-lg mb-8">
-      <a
-        target="_blank"
-        rel="noreferrer noopener"
-        href=""
+      <Link
+        href="/"
         className="flex items-center h-full"
       >
         <img
@@ -51,7 +52,8 @@ const Navbar = () => {
           alt="HireFree Logo"
           className="h-[80px] w-auto object-contain"
         />
-      </a>
+      </Link>
+
       <BurgerMenu
         className="block tablet:hidden cursor-pointer hover:text-blue-500 transition-colors"
         onClick={() => setIsMobileMenuOpen(true)}
@@ -66,11 +68,10 @@ const Navbar = () => {
               {link.name}
             </Link>
             <div
-              className={`${
-                router.pathname === link.href
+              className={`${router.pathname === link.href
                   ? "h-[3px] bg-blue-500 w-full absolute bottom-0"
                   : "h-[3px] bg-transparent w-0 absolute bottom-0 transition-all duration-300 group-hover:w-full group-hover:bg-blue-500"
-              }`}
+                }`}
             ></div>
           </li>
         ))}
@@ -88,11 +89,10 @@ const Navbar = () => {
             {links.map((link, index) => (
               <li key={index} className="hover:text-blue-500 transition-colors">
                 <Link
-                  className={`w-full block py-2 ${
-                    router.pathname === link.href
+                  className={`w-full block py-2 ${router.pathname === link.href
                       ? "border-b-2 border-blue-500 text-blue-500"
                       : "border-b border-gray-100"
-                  }`}
+                    }`}
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >

@@ -7,6 +7,7 @@ import { Web3SignatureProvider } from "@requestnetwork/web3-signature";
 import Head from "next/head";
 import { ethers } from "ethers";
 import { getRequestParameters } from '../../hooks/useInvoice';
+import Toast from '../../components/Toast';
 
 interface Milestone {
   name: string;
@@ -32,7 +33,6 @@ export default function ProjectDetails() {
   const { data: walletClient } = useWalletClient();
   const { query } = router;
 
-  // Parse milestones and project details
   const parsedMilestones = query.milestones
     ? JSON.parse(String(query.milestones))
     : [];
@@ -49,15 +49,20 @@ export default function ProjectDetails() {
     freelancer_address: String(query.freelancer_address),
   };
 
-  // State to track completed milestones
   const [completedMilestones, setCompletedMilestones] = useState<number[]>([]);
+  const [toast, setToast] = useState<{
+    show: boolean;
+    message: string;
+    type: 'success' | 'error' | 'warning';
+  }>({
+    show: false,
+    message: '',
+    type: 'success'
+  });
 
-  // Handle invoice creation and update completed milestones
   const handleCreateInvoice = async (milestoneIndex: number) => {
     try {
       const web3SignatureProvider = new Web3SignatureProvider(walletClient);
-      console.log("req started", walletClient)
-
       const requestClient = new RequestNetwork({
         nodeConnectionConfig: {
           baseURL: "https://sepolia.gateway.request.network/",
@@ -93,10 +98,8 @@ export default function ProjectDetails() {
           milestoneAmount: parsedMilestones[milestoneIndex].amount
         }),
       });
-  
-      // Check if this was the last milestone
+
       if (milestoneIndex === parsedMilestones.length - 1) {
-        // Update project status to completed
         await fetch('/api/project/updateStatus', {
           method: 'POST',
           headers: {
@@ -108,12 +111,24 @@ export default function ProjectDetails() {
           }),
         });
       }
-  
-      alert('Invoice created successfully!');
-      router.push('/home');
-      
+
+      setToast({
+        show: true,
+        message: 'Invoice created successfully!',
+        type: 'success'
+      });
+
+      setTimeout(() => {
+        router.push('/home');
+      }, 2000);
+
     } catch (error) {
       console.error('Error creating invoice:', error);
+      setToast({
+        show: true,
+        message: 'Failed to create invoice. Please try again.',
+        type: 'error'
+      });
     }
   };
 
@@ -134,8 +149,6 @@ export default function ProjectDetails() {
       </svg>
     </div>
   );
-  
-
 
   return (
     <>
@@ -144,7 +157,6 @@ export default function ProjectDetails() {
       </Head>
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-12">
         <div className="container mx-auto px-4 max-w-5xl">
-          {/* Header Section */}
           <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
             <div className="flex flex-col items-center mb-6">
               <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent text-center mb-4">
@@ -154,7 +166,6 @@ export default function ProjectDetails() {
                 {project.status}
               </span>
             </div>
-            {/* Project Overview */}
             <div className="grid grid-cols-3 gap-8 mb-8">
               <div className="text-center p-4 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 transform transition-all duration-300 hover:scale-105 hover:shadow-lg hover:from-indigo-100 hover:to-purple-100 cursor-pointer">
                 <p className="text-gray-600 text-sm mb-1">Budget</p>
@@ -180,7 +191,6 @@ export default function ProjectDetails() {
               </div>
             </div>
 
-            {/* Description */}
             <div className="mb-8">
               <h2 className="text-2xl font-semibold mb-4 text-gray-800">
                 Project Description
@@ -191,7 +201,6 @@ export default function ProjectDetails() {
             </div>
           </div>
 
-          {/* Milestones Section */}
           <div className="bg-white rounded-2xl shadow-lg p-8">
             <h2 className="text-2xl font-semibold mb-6 text-gray-800">
               Project Milestones
@@ -220,7 +229,8 @@ export default function ProjectDetails() {
                     {milestone.completed ? (
                       <CheckIcon />
                     ) : (
-                      index === parsedMilestones.findIndex((m: { completed: boolean })  => !m.completed) && (                        <button
+                      index === parsedMilestones.findIndex((m: { completed: boolean })  => !m.completed) && (                        
+                        <button
                           onClick={() => handleCreateInvoice(index)}
                           className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:opacity-90 transition-all duration-300 shadow-md hover:shadow-xl transform hover:-translate-y-0.5 font-medium"
                         >
@@ -235,6 +245,12 @@ export default function ProjectDetails() {
           </div>
         </div>
       </div>
+      <Toast 
+        show={toast.show}
+        message={toast.message}
+        type={toast.type}
+        onClose={() => setToast(prev => ({ ...prev, show: false }))}
+      />
     </>
   );
 }

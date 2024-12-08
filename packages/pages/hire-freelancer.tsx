@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { useAccount } from "wagmi";
+import Toast from '@/components/Toast';
 
 interface Milestone {
   name: string;
@@ -53,9 +54,18 @@ const HireFreelancer = () => {
   }, []);
 
   const handleContactClick = (freelancer: Freelancer) => {
+    if (!address) {
+      setToast({
+        show: true,
+        message: 'Connect your wallet to contact freelancers',
+        type: 'error'
+      });
+      return;
+    }
     setSelectedFreelancer(freelancer);
     setShowModal(true);
   };
+  
 
   const addMilestone = () => {
     setProjectDetails({
@@ -90,15 +100,24 @@ const HireFreelancer = () => {
     });
   };
 
+  const [toast, setToast] = useState<{
+    show: boolean;
+    message: string;
+    type: 'success' | 'error' | 'warning';
+  }>({
+    show: false,
+    message: '',
+    type: 'success'
+  });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     if (!address || !selectedFreelancer) {
       alert("Please connect your wallet first");
       return;
     }
 
-    // Add completed:false to each milestone
     const milestonesWithStatus = projectDetails.milestones.map(milestone => ({
       ...milestone,
       completed: false
@@ -124,6 +143,12 @@ const HireFreelancer = () => {
       const data = await response.json();
 
       if (data.success) {
+        setToast({
+          show: true,
+          message: 'Project details sent successfully!',
+          type: 'success'
+        });
+
         setTimeout(() => {
           setIsProcessing(false);
           setShowModal(false);
@@ -134,17 +159,21 @@ const HireFreelancer = () => {
             timeline: "",
             milestones: [],
           });
-          alert("Request sent for project proposal!");
-        }, 5000);
+        }, 2000);
       } else {
         throw new Error(data.message);
       }
     } catch (error) {
       console.error("Error submitting project:", error);
+      setToast({
+        show: true,
+        message: 'Failed to submit project. Please try again.',
+        type: 'error'
+      });
       setIsProcessing(false);
-      alert("Failed to submit project request. Please try again.");
     }
   };
+
   return (
     <>
       <Head>
@@ -360,6 +389,13 @@ const HireFreelancer = () => {
           </div>
         </div>
       )}
+
+      <Toast
+        show={toast.show}
+        message={toast.message}
+        type={toast.type}
+        onClose={() => setToast(prev => ({ ...prev, show: false }))}
+      />
     </>
   );
 };

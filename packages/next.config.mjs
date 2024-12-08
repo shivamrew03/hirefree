@@ -11,9 +11,6 @@ const nextConfig = {
     // Make sure development entries are not cached for too long
     maxInactiveAge: 60 * 60 * 1000,
   },
-  experimental: {
-    disableDevRuntimeErrorOverlay: true, // This will disable the runtime error overlay in dev
-  },
 };
 
 export default nextConfig;
