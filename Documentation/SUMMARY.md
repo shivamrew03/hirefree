@@ -1,18 +1,22 @@
 # Table of contents
 
-* [Welcome](README.md)
-* [Welcome](readme-1.md)
+* [👨‍💻 HireFree](README.md)
 
-## Getting Started
+## Overview
 
-* [Quickstart](getting-started/quickstart.md)
-* [Publish your docs](getting-started/publish-your-docs.md)
+* [⛩️ Introduction](overview/quickstart/README.md)
+  * [🍀 Project Overview](overview/quickstart/project-overview.md)
+  * [🪶 Key Features](overview/quickstart/key-features.md)
+  * [🤖 Core Technologies](overview/quickstart/core-technologies.md)
+* [🌟 Getting Started](overview/publish-your-docs.md)
 
 ## Basics
 
-* [Editor](basics/editor.md)
-* [Markdown](basics/markdown.md)
-* [Images & media](basics/images-and-media.md)
-* [Interactive blocks](basics/interactive-blocks.md)
-* [OpenAPI](basics/openapi.md)
-* [Integrations](basics/integrations.md)
+* [🏠 Platform Design](basics/editor/README.md)
+  * [🏯 Architecture](basics/editor/architecture.md)
+  * [🌊 Project Workflow](basics/editor/project-workflow.md)
+  * [🐬 Data Flow Diagram](basics/editor/data-flow-diagram.md)
+* [📗 Request Network Integration](basics/markdown.md)
+* [📊 Competitive Advantage](basics/images-and-media.md)
+* [💡 Unique Value Proposition](basics/interactive-blocks.md)
+* [🌐 Global Impact](basics/openapi.md)

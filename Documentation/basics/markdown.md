@@ -1,26 +1,20 @@
 ---
 icon: markdown
+cover: >-
+  https://images.unsplash.com/photo-1518495973542-4542c06a5843?crop=entropy&cs=srgb&fm=jpg&ixid=M3wxOTcwMjR8MHwxfHNlYXJjaHwzfHxuYXR1cmV8ZW58MHx8fHwxNzMzNjY0MDY3fDA&ixlib=rb-4.0.3&q=85
+coverY: 0
 ---
 
-# Markdown
+# 📗 Request Network Integration
 
-GitBook supports many different types of content, and is backed by Markdown — meaning you can copy and paste any existing Markdown files directly into the editor!
+#### How Request Network Powers HireFree:
 
-<figure><img src="https://gitbookio.github.io/onboarding-template-images/markdown-hero.png" alt=""><figcaption></figcaption></figure>
+* **Automating Invoice Creation**: Freelancers can generate detailed invoices tied to milestone completion.
+* **Providing Real-Time Payment Tracking**: Provides both parties with visibility into payment status.
 
-Feel free to test it out and copy the Markdown below by hovering over the code block in the upper right, and pasting into a new line underneath.
+**Key Invoicing Capabilities:**
 
-```markdown
-# Heading
-
-This is some paragraph text, with a [link](https://docs.gitbook.com) to our docs. 
-
-## Heading 2
-- Point 1
-- Point 2
-- Point 3
-```
-
-{% hint style="info" %}
-If you have multiple files, GitBook makes it easy to import full repositories too — allowing you to keep your GitBook content in sync.
-{% endhint %}
+* **Milestone-Specific Invoices**: Payments tied to clear deliverables, ensuring accountability.
+* **Instant Payment Settlements**: Payments are processed instantly upon milestone approval.
+* **Transparent Financial Tracking**: Immutable ledger for dispute resolution and financial clarity.
+* **Low-Cost Transactions**: Reduces intermediary fees, benefiting both freelancers and hirers.

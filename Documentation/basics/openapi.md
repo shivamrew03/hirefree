@@ -1,15 +1,15 @@
 ---
 icon: network-wired
+cover: >-
+  https://images.unsplash.com/photo-1451187580459-43490279c0fa?crop=entropy&cs=srgb&fm=jpg&ixid=M3wxOTcwMjR8MHwxfHNlYXJjaHwzfHxnbG9iYWx8ZW58MHx8fHwxNzMzNjY0MjA2fDA&ixlib=rb-4.0.3&q=85
+coverY: 0
 ---
 
-# OpenAPI
+# 🌐 Global Impact
 
-You can sync GitBook pages with an OpenAPI or Swagger file or a URL to include auto-generated API methods in your documentation.
+By democratizing freelance financial management, HireFree empowers professionals worldwide to:
 
-### OpenAPI block
-
-GitBook's OpenAPI block is powered by [Scalar](https://scalar.com/), so you can test your APIs directly from your docs.
-
-{% swagger src="https://petstore3.swagger.io/api/v3/openapi.json" path="/pet" method="post" %}
-[https://petstore3.swagger.io/api/v3/openapi.json](https://petstore3.swagger.io/api/v3/openapi.json)
-{% endswagger %}
+* Manage international projects seamlessly
+* Reduce financial friction
+* Gain complete visibility into earnings
+* Simplify complex financial workflows
