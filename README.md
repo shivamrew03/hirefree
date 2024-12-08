@@ -8,6 +8,9 @@ HireFree is transforming the freelancing landscape with a cutting-edge blockchai
 
 At the heart of HireFree's unique proposition lies its milestone-based invoicing system powered by Request Network and XMTP bot in the converse app for notifications/frames about projects and invoices, a critical innovation in today’s fast-paced professional world. This feature ensures payment transparency, financial security, and streamlined cash flow management, ease of use, eliminating disputes and fostering trust between clients and freelancers.
 
+XMTP Bot Address(Converse App) : 0x549cB02B9828e341C25D4FDFCE0733000FcF64dB
+
+Docs : [HireFree Documentation](https://chainmates.gitbook.io/hirefree)
 ## ✏️ Key Features
 
 ### 1) Decentralized Freelancer Profiles : 
