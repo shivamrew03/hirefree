@@ -20,6 +20,12 @@ const handleRequest = frames(async (ctx) => {
       >
         Withdraw
       </Button>,
+      <Button
+        action="link"
+        target= "https://google.com"
+      >
+        google
+      </Button>
     ],
   };
 });

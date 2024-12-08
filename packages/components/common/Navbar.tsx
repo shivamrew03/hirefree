@@ -23,7 +23,7 @@ const Navbar = () => {
       href: "/",
     },
     {
-      name: "Overview",
+      name: "Dashboard",
       href: "/home",
     },
     ...(isConnected ? [
@@ -39,6 +39,9 @@ const Navbar = () => {
     {
       name: "Hire a freelancer",
       href: "/hire-freelancer",
+    },{
+      name : "Docs",
+      href: "https://chainmates.gitbook.io/hirefree"
     }
   ];
   return (
