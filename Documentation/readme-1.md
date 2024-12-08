@@ -1,17 +1,10 @@
----
-icon: hand-wave
----
 
-# Welcome
+# HireFree
 
-<div align="center"><img src="../packages/public/logojj.png" alt="" width="200"></div>
+<div align="center"><img src=".gitbook/assets/logojj.png" alt="HireFree Logo" width="200"></div>
 
-&#x20;**🪶 Overview**\
-&#x20;   &#x20;
----------------
+\## 🪶 Overview HireFree is transforming the freelancing landscape with a cutting-edge blockchain-powered ecosystem designed for seamless, transparent, and secure professional collaboration. Leveraging advanced decentralized technologies, HireFree redefines how professionals connect, work, and get rewarded on a global scale.
 
-&#x20;HireFree is transforming the freelancing landscape with a cutting-edge blockchain-powered ecosystem designed for seamless, transparent, and secure professional collaboration. Leveraging advanced decentralized technologies, HireFree redefines how professionals connect, work, and get rewarded on a global scale.\
-\
 At the heart of HireFree's unique proposition lies its milestone-based invoicing system powered by Request Network and XMTP bot in the converse app for notifications/frames about projects and invoices, a critical innovation in today’s fast-paced professional world. This feature ensures payment transparency, financial security, and streamlined cash flow management, ease of use, eliminating disputes and fostering trust between clients and freelancers.
 
 ## ✏️ Key Features
@@ -55,15 +48,15 @@ Every transaction is recorded on the blockchain, providing an immutable ledger f
 
 ### HireFree Architecture
 
-<div align="center"><img src="../packages/public/Basic Architecture.png" alt="Hyper Harvest Architecture" width="1000"></div>
+<div align="center"><img src=".gitbook/assets/Basic Architecture.png" alt="Hyper Harvest Architecture" width="1000"></div>
 
 ### Project Workflow
 
-<div align="center"><img src="../packages/public/Project Workflow.png" alt="Hyper Harvest Architecture" width="1000"></div>
+<div align="center"><img src=".gitbook/assets/Project Workflow.png" alt="Hyper Harvest Architecture" width="1000"></div>
 
 ### Data Flow Diagram
 
-<div align="center"><img src="../packages/public/HireFree DFD.png" alt="Hyper Harvest Architecture" width="1000"></div>
+<div align="center"><img src=".gitbook/assets/HireFree DFD.png" alt="Hyper Harvest Architecture" width="1000"></div>
 
 ## 🔥 Request Network Integration
 
